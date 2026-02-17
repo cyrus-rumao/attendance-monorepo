@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
@@ -6,11 +7,14 @@ import './index.css';
 import { Toaster } from 'sonner';
 import App from './App';
 
-createRoot(document.getElementById('root')!).render(
-	<BrowserRouter>
-		<StrictMode>
-			<App />
-			<Toaster richColors />
-		</StrictMode>
-	</BrowserRouter>,
-);
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  createRoot(rootElement).render(
+    <BrowserRouter>
+      <StrictMode>
+        <App />
+        <Toaster richColors />
+      </StrictMode>
+    </BrowserRouter>,
+  );
+}
