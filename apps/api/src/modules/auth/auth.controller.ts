@@ -3,11 +3,9 @@ import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { redis } from '../../config/redis';
 import { Request, Response } from 'express';
-
 interface TokenPayload extends JwtPayload {
   userId: string;
 }
-
 const generateTokens = (userId: string) => {
   const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET as string, {
     expiresIn: '15m',
@@ -118,9 +116,17 @@ export const logout = async (req: Request, res: Response): Promise<Response> => 
 
     await redis.del(`refresh_token:${decoded.userId}`);
 
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
 
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
     return res.status(200).json({ success: true });
   } catch {
     return res.status(500).json({ message: 'Logout failed' });

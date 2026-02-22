@@ -8,7 +8,7 @@ export const UserSchema = z.object({
 	__v: z.number(),
 });
 
-export type User = z.infer<typeof UserSchema>;
+export type UserType = z.infer<typeof UserSchema>;
 
 export const SignupInputSchema = z
 	.object({

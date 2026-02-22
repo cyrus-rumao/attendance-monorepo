@@ -21,7 +21,7 @@ export const minutesToTime = (minutes: number): string => {
 };
 
 export const calculateRowSpan = (startTime: string, endTime: string): number => {
-  return (timeToMinutes(endTime) - timeToMinutes(startTime)) / 30; // 30-minute slots
+  return (timeToMinutes(endTime) - timeToMinutes(startTime)) / 60; // 30-minute slots
 };
 
 export const getSlotAtTime = (

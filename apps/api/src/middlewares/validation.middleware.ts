@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { signupSchema, loginSchema } from './auth.validation.js';
+import { SignupInputSchema, LoginInputSchema } from '@attendance/schemas';
 
 export const signupValidation = (req: Request, res: Response, next: NextFunction): void => {
-  const result = signupSchema.safeParse(req.body);
+  const result = SignupInputSchema.safeParse(req.body);
 
   if (!result.success) {
     res.status(400).json({
@@ -13,9 +13,8 @@ export const signupValidation = (req: Request, res: Response, next: NextFunction
   req.body = result.data;
   next();
 };
-
 export const loginValidation = (req: Request, res: Response, next: NextFunction): void => {
-  const result = loginSchema.safeParse(req.body);
+  const result = LoginInputSchema.safeParse(req.body);
 
   if (!result.success) {
     res.status(400).json({

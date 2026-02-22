@@ -47,8 +47,7 @@ export const useTimetableStore = create<TimetableStore>((set, get) => ({
 
       const err = error as AxiosError;
       if (err.response?.status === 404) {
-        console.log('LALALAl');
-        notify.error('Failed to fetch timetable');
+        console.log("No timetable found for user, starting with empty timetable");
       }
       return null;
     }

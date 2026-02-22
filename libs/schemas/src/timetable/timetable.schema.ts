@@ -31,14 +31,12 @@ export const TimetableSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   __v: z.number(),
-
-  monday: DaySchema.optional(),
-  tuesday: DaySchema.optional(),
-  wednesday: DaySchema.optional(),
-  thursday: DaySchema.optional(),
-  friday: DaySchema.optional(),
-  saturday: DaySchema.optional(),
-  sunday: DaySchema.optional(),
+  monday: DaySchema.default([]),
+  tuesday: DaySchema.default([]),
+  wednesday: DaySchema.default([]),
+  thursday: DaySchema.default([]),
+  friday: DaySchema.default([]),
+  saturday: DaySchema.default([]),
 });
 
 // export type Subject = z.infer<typeof SubjectSchema>;

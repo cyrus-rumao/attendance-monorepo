@@ -2,18 +2,8 @@ import Timetable, { ITimetableSlot } from './timetable.model';
 import Subject from '../subjects/subject.model';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-
+import { DAYS } from '@attendance/schemas';
 /* ---------------- CONSTANTS ---------------- */
-
-const DAYS = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday',
-] as const;
 
 type Day = (typeof DAYS)[number];
 
@@ -26,7 +16,7 @@ const normalizeTimetable = (
   const normalized = {} as Record<Day, ITimetableSlot[]>;
 
   DAYS.forEach((day) => {
-    normalized[day] = Array.isArray(data?.[day]) ? data[day]! : [];
+    normalized[day] = Array.isArray(data?.[day]) ? (data[day] ?? []) : [];
   });
 
   return normalized;
@@ -104,8 +94,8 @@ export const saveTimetable = async (req: Request, res: Response): Promise<Respon
       .populate('wednesday.subjectId')
       .populate('thursday.subjectId')
       .populate('friday.subjectId')
-      .populate('saturday.subjectId')
-      .populate('sunday.subjectId');
+      .populate('saturday.subjectId');
+    // .populate('sunday.subjectId');
 
     return res.json(populated);
   } catch (error) {
@@ -130,8 +120,8 @@ export const getTimetable = async (req: Request, res: Response): Promise<Respons
       .populate('wednesday.subjectId')
       .populate('thursday.subjectId')
       .populate('friday.subjectId')
-      .populate('saturday.subjectId')
-      .populate('sunday.subjectId');
+      .populate('saturday.subjectId');
+    // .populate('sunday.subjectId');
 
     if (!timetable) {
       return res.status(404).json({ message: 'Timetable not found' });

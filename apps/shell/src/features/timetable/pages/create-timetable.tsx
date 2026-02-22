@@ -90,7 +90,7 @@ const CreateTimetable: React.FC = () => {
     }
 
     const newSlot: TimetableSlot = {
-      subjectId: draggedSubject._id as any, // We will convert to ID string when saving
+      subjectId: draggedSubject, // We will convert to ID string when saving
       startTime: time,
       endTime: endTime,
     };
@@ -145,9 +145,6 @@ const CreateTimetable: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-light text-white mb-2">Create Timetable</h1>
-              <p className="text-zinc-400">
-                Drag subjects from the sidebar and drop them into time slots
-              </p>
             </div>
             <button
               onClick={handleSave}
@@ -176,6 +173,7 @@ const CreateTimetable: React.FC = () => {
           {/* Timetable Grid */}
           <TimetableGrid
             timetable={localTimetable}
+            mode="create"
             draggedSubject={draggedSubject}
             onDrop={handleDrop}
             onDragOver={handleDragOver}

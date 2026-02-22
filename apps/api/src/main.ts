@@ -1,18 +1,14 @@
-console.log('🔥 SERVER BOOT');
+// console.log('🔥 SERVER BOOT');
 import dotenv from 'dotenv';
-dotenv.config();
-import  { abcd } from '@attendance/schemas';
-console.log('Timetable impotrted', abcd);
+dotenv.config({override: true});
 import express, { Application } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
 import authRoutes from './modules/auth/auth.route.js';
 import subjectRoutes from './modules/subjects/subject.route.js';
 import timetableRoutes from './modules/timetable/timetable.route.js';
 import attendanceRoutes from './modules/attendance/attendance.route.js';
 import { connectDB } from './config/db.js';
-
 const app: Application = express();
 
 app.use(
@@ -21,7 +17,6 @@ app.use(
     credentials: true,
   }),
 );
-
 app.use(express.json());
 app.use(cookieParser());
 

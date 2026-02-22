@@ -8,18 +8,23 @@ import TimetableCell from './timetable-cell';
 
 interface TimetableGridProps {
   timetable: Record<Day, TimetableSlot[]>;
-  draggedSubject: Subject | null;
-  onDrop: (day: Day, time: string) => void;
-  onDragOver: (e: React.DragEvent) => void;
-  onRemoveSlot: (day: Day, slot: TimetableSlot) => void;
+  mode: 'create' | 'view';
+
+  draggedSubject?: Subject | null;
+  onDrop?: (day: Day, time: string) => void;
+  onDragOver?: (e: React.DragEvent) => void;
+  onRemoveSlot?: (day: Day, slot: TimetableSlot) => void;
+  onSlotClick?: (slot: TimetableSlot) => void;
 }
 
 const TimetableGrid: React.FC<TimetableGridProps> = ({
   timetable,
+  mode,
   draggedSubject,
   onDrop,
   onDragOver,
   onRemoveSlot,
+  onSlotClick,
 }) => {
   return (
     <div className="flex-1 overflow-x-auto">
@@ -72,13 +77,15 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({
                     day={day}
                     time={time}
                     slot={slot}
+                    mode={mode}
                     rowSpan={rowSpan}
                     dayIndex={dayIndex}
                     timeIndex={timeIndex}
-                    draggedSubject={draggedSubject}
-                    onDrop={onDrop}
-                    onDragOver={onDragOver}
-                    onRemoveSlot={onRemoveSlot}
+                    draggedSubject={mode === 'create' ? draggedSubject : null}
+                    onDrop={mode === 'create' ? onDrop : undefined}
+                    onDragOver={mode === 'create' ? onDragOver : undefined}
+                    onRemoveSlot={mode === 'create' ? onRemoveSlot : undefined}
+                    onSlotClick={mode === 'view' ? onSlotClick : undefined}
                   />
                 );
               })}

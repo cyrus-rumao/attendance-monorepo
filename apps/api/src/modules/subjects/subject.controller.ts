@@ -3,9 +3,7 @@ import Timetable, { ITimetableSlot } from '../timetable/timetable.model';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Attendance from '../attendance/attendance.model';
-/* ---------------- CONSTANTS ---------------- */
-
-const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
+import { DAYS } from '@attendance/schemas';
 
 type Day = (typeof DAYS)[number];
 
@@ -13,7 +11,7 @@ type Day = (typeof DAYS)[number];
 
 export const createSubject = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user!._id;
+    const userId = req.user._id;
 
     const subject = await Subject.create({
       userId,
@@ -29,7 +27,7 @@ export const createSubject = async (req: Request, res: Response): Promise<Respon
 
 export const getSubjects = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user?._id;
+    const userId = req.user._id;
 
     const subjects = await Subject.find({ userId });
 
@@ -42,7 +40,7 @@ export const getSubjects = async (req: Request, res: Response): Promise<Response
 
 export const updateSubject = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user!._id;
+    const userId = req.user._id;
     const { id } = req.params;
 
     if (Array.isArray(id)) {
@@ -68,7 +66,7 @@ export const updateSubject = async (req: Request, res: Response): Promise<Respon
 
 export const deleteSubject = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user!._id;
+    const userId = req.user._id;
     const { id } = req.params;
 
     if (Array.isArray(id)) {
@@ -90,7 +88,9 @@ export const deleteSubject = async (req: Request, res: Response): Promise<Respon
     }
 
     // Remove subject from timetable slots
-    const timetable = await Timetable.findOne({ userId });
+    const timetable = await Timetable.findOne({ userId }).select(
+      'monday tuesday wednesday thursday friday saturday sunday',
+    );
 
     if (timetable) {
       DAYS.forEach((day: Day) => {
@@ -142,7 +142,7 @@ export const getFullSubjectAnalytics = async (req: Request, res: Response): Prom
     let absent = 0;
     let bunked = 0;
 
-    records.forEach((r: any) => {
+    records.forEach((r) => {
       totalConducted += r.hours;
 
       if (r.status === 'present') attended += r.hours;
@@ -159,13 +159,11 @@ export const getFullSubjectAnalytics = async (req: Request, res: Response): Prom
     let weeklyScheduledHours = 0;
 
     if (timetable) {
-      const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-
       DAYS.forEach((day) => {
-        const slots = (timetable as any)[day] || [];
+        const slots = timetable[day] || [];
 
-        slots.forEach((slot: any) => {
-          if (slot.subjectId.toString() === id) {
+        slots.forEach((slot: ITimetableSlot) => {
+          if (String(slot.subjectId) === id) {
             const [sh, sm] = slot.startTime.split(':').map(Number);
             const [eh, em] = slot.endTime.split(':').map(Number);
 

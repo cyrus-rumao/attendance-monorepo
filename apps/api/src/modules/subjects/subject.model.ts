@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Model, Query } from 'mongoose';
 import Attendance from '../attendance/attendance.model';
+import { UpdateQuery } from 'mongoose';
 /* ---------------- TYPES ---------------- */
 
 export type SubjectType = 'lecture' | 'lab';
@@ -49,12 +50,15 @@ subjectSchema.pre('validate', function (this: ISubject) {
 });
 
 subjectSchema.pre<Query<ISubject, ISubject>>('findOneAndUpdate', function () {
-  const update = this.getUpdate() as any;
-
-  if (update?.name) {
+  const update = this.getUpdate() as UpdateQuery<ISubject>;
+  if (!update) return;
+  if (update.name) {
     update.name = update.name.trim().toUpperCase();
-    this.setUpdate(update);
   }
+  if (update.$set?.name) {
+    update.$set.name = update.$set.name.trim().toUpperCase();
+  }
+  this.setUpdate(update);
 });
 
 subjectSchema.pre('findOneAndDelete', async function () {

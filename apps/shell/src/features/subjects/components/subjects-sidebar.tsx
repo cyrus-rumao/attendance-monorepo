@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Subject } from '@attendance/schemas';
-import SubjectCard from './subject-card';
+import DraggableSubjectItem from './DraggableSubjectItem';
 
 interface SubjectsSidebarProps {
   subjects: Subject[];
@@ -56,7 +56,7 @@ const SubjectsSidebar: React.FC<SubjectsSidebarProps> = ({
         {/* Subject Cards */}
         <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
           {filteredSubjects.map((subject) => (
-            <SubjectCard
+            <DraggableSubjectItem
               key={subject._id}
               subject={subject}
               onDragStart={onDragStart}
