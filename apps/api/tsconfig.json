@@ -8,6 +8,8 @@
     }
   ],
   "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true
   }
 }

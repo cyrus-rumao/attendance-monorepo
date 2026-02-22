@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
+    "baseUrl": ".",
     "importHelpers": true,
     "isolatedModules": true,
     "lib": ["es2022"],
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -16,6 +12,9 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"]
+    "paths": {
+      "@attendance/schemas": ["libs/schemas/src/index"],
+      "@attendance/schemas/*": ["libs/schemas/src/*"]
+    }
   }
 }

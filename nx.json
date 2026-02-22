@@ -16,7 +16,7 @@
     ],
     "sharedGlobals": []
   },
-  "plugins": [  
+  "plugins": [
     {
       "plugin": "@nx/js/typescript",
       "options": {
@@ -74,6 +74,14 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
+  },
+  "cli": {
+    "packageManager": "pnpm"
   }
 }
