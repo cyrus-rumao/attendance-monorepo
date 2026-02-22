@@ -1,9 +1,9 @@
 import Attendance from './attendance.model';
-import Subject from '../subjects/subject.model';
-import Timetable from '../timetable/timetable.model';
+import Subject, { ISubject } from '../subjects/subject.model';
+import Timetable, { ITimetableSlot } from '../timetable/timetable.model';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-
+import { DAYS, type Day } from '@attendance/schemas';
 /* ---------------- HELPERS ---------------- */
 
 const calculateDuration = (start: string, end: string): number => {
@@ -49,12 +49,18 @@ export const markAttendance = async (req: Request, res: Response): Promise<Respo
       return res.status(400).json({ message: 'No timetable found' });
     }
 
-    const day = getDayFromDate(date);
+    const dayRaw = getDayFromDate(date);
 
-    const daySlots = (timetable as any)[day] || [];
+    if (!DAYS.includes(dayRaw as Day)) {
+      return res.status(400).json({ message: 'Invalid day' });
+    }
+
+    const day = dayRaw as Day;
+
+    const daySlots = timetable[day] || [];
 
     const matchingSlot = daySlots.find(
-      (slot: any) =>
+      (slot: ITimetableSlot) =>
         slot.subjectId.toString() === subjectId &&
         slot.startTime === startTime &&
         slot.endTime === endTime,
@@ -81,8 +87,13 @@ export const markAttendance = async (req: Request, res: Response): Promise<Respo
     });
 
     return res.status(201).json(attendance);
-  } catch (error: any) {
-    if (error.code === 11000) {
+  } catch (error: unknown) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'code' in error &&
+      (error as { code?: number }).code === 11000
+    ) {
       return res.status(400).json({
         message: 'Attendance already marked for this slot',
       });
@@ -147,7 +158,9 @@ export const getAttendanceSummary = async (req: Request, res: Response): Promise
   const records = await Attendance.find({
     userId,
     status: { $ne: 'cancelled' },
-  }).populate('subjectId', 'name code type');
+  })
+    .populate<{ subjectId: ISubject }>('subjectId', 'name code type')
+    .lean();
   console.log(records);
   if (records.length === 0) {
     return res.status(404).json({ message: 'No records Found' });
@@ -155,14 +168,14 @@ export const getAttendanceSummary = async (req: Request, res: Response): Promise
   const summary: Record<
     string,
     {
-      subject: any;
+      subject: Pick<ISubject, '_id' | 'name' | 'code' | 'type'>;
       attended: number;
       total: number;
       percentage: number;
     }
   > = {};
 
-  records.forEach((r: any) => {
+  records.forEach((r) => {
     const id = r.subjectId._id.toString();
 
     if (!summary[id]) {
