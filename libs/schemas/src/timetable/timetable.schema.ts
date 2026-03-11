@@ -19,7 +19,6 @@ export const TimetableSaveSchema = z.object({
   wednesday: z.array(TimetableSaveSlotSchema).optional(),
   thursday: z.array(TimetableSaveSlotSchema).optional(),
   friday: z.array(TimetableSaveSlotSchema).optional(),
-  saturday: z.array(TimetableSaveSlotSchema).optional(),
 });
 
 export const DaySchema = z.array(TimetableSlotSchema);
@@ -35,7 +34,6 @@ export const TimetableSchema = z.object({
   wednesday: DaySchema.default([]),
   thursday: DaySchema.default([]),
   friday: DaySchema.default([]),
-  saturday: DaySchema.default([]),
 });
 
 // export type Subject = z.infer<typeof SubjectSchema>;

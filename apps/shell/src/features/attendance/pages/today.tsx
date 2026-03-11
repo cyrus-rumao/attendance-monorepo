@@ -31,8 +31,7 @@ const Today: React.FC = () => {
     | 'tuesday'
     | 'wednesday'
     | 'thursday'
-    | 'friday'
-    | 'saturday' => {
+    | 'friday' => {
     return new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() as Day;
   };
 

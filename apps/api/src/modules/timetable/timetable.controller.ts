@@ -94,7 +94,7 @@ export const saveTimetable = async (req: Request, res: Response): Promise<Respon
       .populate('wednesday.subjectId')
       .populate('thursday.subjectId')
       .populate('friday.subjectId')
-      .populate('saturday.subjectId');
+      // .populate('saturday.subjectId');
     // .populate('sunday.subjectId');
 
     return res.json(populated);
@@ -120,7 +120,7 @@ export const getTimetable = async (req: Request, res: Response): Promise<Respons
       .populate('wednesday.subjectId')
       .populate('thursday.subjectId')
       .populate('friday.subjectId')
-      .populate('saturday.subjectId');
+      // .populate('saturday.subjectId');
     // .populate('sunday.subjectId');
 
     if (!timetable) {

@@ -21,7 +21,6 @@ const CreateTimetable: React.FC = () => {
     wednesday: [],
     thursday: [],
     friday: [],
-    saturday: [],
   });
 
   const [draggedSubject, setDraggedSubject] = useState<Subject | null>(null);
@@ -40,7 +39,6 @@ const CreateTimetable: React.FC = () => {
         wednesday: [],
         thursday: [],
         friday: [],
-        saturday: [],
       };
       DAYS.forEach((day) => {
         if (timetable[day]) {

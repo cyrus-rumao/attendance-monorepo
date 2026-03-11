@@ -16,65 +16,60 @@ export default function Navbar(): JSX.Element {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full h-16 px-8 flex items-center justify-between bg-black/40 backdrop-blur-md border-b border-amber-900/30 z-50">
-      {/* Brand - Subtle Gold Gradient Text */}
-      <Link
-        to="/"
-        className="text-xl font-bold tracking-tighter bg-linear-to-r from-amber-200 via-amber-500 to-amber-200 bg-clip-text text-transparent hover:opacity-80 transition"
+    
+      <aside
+        className="fixed top-0 left-0 z-40 h-screen w-72 border-r border-amber-900/40 bg-zinc-950/95 p-6 backdrop-blur-md"
+        aria-label="Side navigation"
       >
-        ATTENDANCE<span className="font-light">TRKR</span>
-      </Link>
+        <div className="mb-8">
+          <Link
+            to="/"
+            className="text-xl font-bold tracking-tighter bg-linear-to-r from-amber-200 via-amber-500 to-amber-200 bg-clip-text text-transparent hover:opacity-80 transition"
+          >
+            ATTENDANCE<span className="font-light">TRKR</span>
+          </Link>
+        </div>
 
-      {/* Right side */}
-      <div className="flex items-center gap-8">
-        {!user ? (
-          <>
-            <Link
-              to="/login"
-              className="text-sm font-medium text-amber-100/70 hover:text-amber-200 transition tracking-wide"
-            >
-              Login
-            </Link>
+        <nav className="flex flex-col gap-3">
+          <Link
+            to="/today"
+            className="rounded-md px-3 py-2 text-sm font-medium text-amber-100/80 transition hover:bg-amber-500/10 hover:text-amber-100"
+          >
+            Today Attendance
+          </Link>
 
-            <Link
-              to="/signup"
-              className="text-sm font-semibold px-5 py-2 rounded-full bg-amber-600 text-black hover:bg-amber-500 hover:shadow-[0_0_15px_rgba(217,119,6,0.4)] transition-all duration-300"
-            >
-              Join Now
-            </Link>
-          </>
-        ) : (
-          <>
-            <div className="flex flex-col items-end leading-none">
-              <span className="text-sm font-medium text-amber-100">{user.name}</span>
-            </div>
-            <Link
-              to="/subjects"
-              className="text-sm font-medium text-amber-100/70 hover:text-amber-200 transition tracking-wide"
-            >
-              Subjects
-            </Link>
-            <Link
-              to="/timetable"
-              className="text-sm font-medium text-amber-100/70 hover:text-amber-200 transition tracking-wide"
-            >
-              TimeTable
-            </Link>
-            <Link
-              to="/create-timetable"
-              className="text-sm font-medium text-amber-100/70 hover:text-amber-200 transition tracking-wide"
-            >
-              Create Timetable
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded border border-amber-900/50 text-amber-500 hover:bg-amber-500/10 hover:border-amber-500 transition-all"
-            >
-              Sign Out
-            </button>
-          </>
-        )}
-      </div>
-    </nav>
+          {user && (
+            <>
+              <Link
+                to="/subjects"
+                className="rounded-md px-3 py-2 text-sm font-medium text-amber-100/80 transition hover:bg-amber-500/10 hover:text-amber-100"
+              >
+                Subjects
+              </Link>
+              <Link
+                to="/timetable"
+                className="rounded-md px-3 py-2 text-sm font-medium text-amber-100/80 transition hover:bg-amber-500/10 hover:text-amber-100"
+              >
+                Timetable
+              </Link>
+              <Link
+                to="/create-timetable"
+                className="rounded-md px-3 py-2 text-sm font-medium text-amber-100/80 transition hover:bg-amber-500/10 hover:text-amber-100"
+              >
+                Create Timetable
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="mt-2 rounded-md border border-amber-900/50 px-4 py-2 text-left text-xs font-bold uppercase tracking-widest text-amber-500 transition-all hover:border-amber-500 hover:bg-amber-500/10"
+              >
+                Sign Out
+              </button>
+            </>
+          )}
+        </nav>
+      </aside>
+
+     
+   
   );
 }

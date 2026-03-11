@@ -1,5 +1,5 @@
 import React from 'react';
-import {  X } from 'lucide-react';
+import { X } from 'lucide-react';
 import type { TimetableSlot } from '@attendance/schemas';
 import type { Subject } from '@attendance/schemas';
 import type { Day } from '@attendance/schemas';
@@ -34,6 +34,8 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
   onRemoveSlot,
   onSlotClick,
 }) => {
+  const isCompactCell = rowSpan <= 1;
+
   // ================= EMPTY CELL =================
   if (!slot) {
     if (mode === 'view') {
@@ -74,7 +76,7 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
   return (
     <div
       onClick={mode === 'view' ? () => onSlotClick?.(slot) : undefined}
-      className={`border-2 border-zinc-800 p-3 group relative ${
+      className={`border-2 border-zinc-800 p-2 group relative overflow-hidden min-h-0 ${
         isLab
           ? 'bg-purple-500/10 hover:bg-purple-500/20 border-l-4 border-purple-500'
           : 'bg-amber-500/10 hover:bg-amber-500/20 border-l-4 border-amber-500'
@@ -88,22 +90,29 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
       {mode === 'create' && (
         <button
           onClick={() => onRemoveSlot?.(day, slot)}
-          className="absolute top-2 right-2 p-1 bg-black/50 rounded opacity-0 group-hover:opacity-100 transition hover:bg-red-500/20 hover:text-red-400"
+          className="absolute top-1.5 right-1.5 p-1 bg-black/50 rounded opacity-0 group-hover:opacity-100 transition hover:bg-red-500/20 hover:text-red-400"
         >
           <X className="w-3 h-3" />
         </button>
       )}
 
       {/* Content */}
-      <div className="flex flex-col h-full justify-center">
-          
+      <div className="flex h-full min-h-0 flex-col justify-center gap-1 pr-6">
+        <h3
+          className={`font-medium text-white leading-tight break-words ${
+            isCompactCell ? 'text-[10px] line-clamp-1' : 'text-[11px] line-clamp-3'
+          }`}
+          title={slot.subjectId.name}
+        >
+          {slot.subjectId.name}
+        </h3>
 
-          <h3 className="font-medium text-white text-[10px] leading-snug   heloo line-clamp-2">
-            {slot.subjectId.name}
-          </h3>
-        
-
-        <div className="text-[10px] text-zinc-500">
+        <div
+          className={`text-zinc-500 leading-tight ${
+            isCompactCell ? 'text-[9px] truncate' : 'text-[10px]'
+          }`}
+          title={`${slot.startTime} - ${slot.endTime}`}
+        >
           {slot.startTime} - {slot.endTime}
         </div>
       </div>

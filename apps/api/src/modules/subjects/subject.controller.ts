@@ -92,7 +92,7 @@ export const deleteSubject = async (req: Request, res: Response): Promise<Respon
 
     // Remove subject from timetable slots
     const timetable = await Timetable.findOne({ userId }).select(
-      'monday tuesday wednesday thursday friday saturday sunday',
+      'monday tuesday wednesday thursday friday',
     );
 
     if (timetable) {

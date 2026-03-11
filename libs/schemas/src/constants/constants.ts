@@ -1,4 +1,4 @@
-export const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
+export const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as const;
 
 export type Day = (typeof DAYS)[number];
 
@@ -23,5 +23,5 @@ export const DAY_LABELS = {
   wednesday: 'Wednesday',
   thursday: 'Thursday',
   friday: 'Friday',
-  saturday: 'Saturday',
+
 } as const;

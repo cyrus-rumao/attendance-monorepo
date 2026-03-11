@@ -15,7 +15,6 @@ export interface ITimetable {
   wednesday: ITimetableSlot[];
   thursday: ITimetableSlot[];
   friday: ITimetableSlot[];
-  saturday: ITimetableSlot[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -57,7 +56,6 @@ const timetableSchema = new Schema<ITimetable>(
     wednesday: { type: [slotSchema], default: [] },
     thursday: { type: [slotSchema], default: [] },
     friday: { type: [slotSchema], default: [] },
-    saturday: { type: [slotSchema], default: [] },
   },
   { timestamps: true },
 );
