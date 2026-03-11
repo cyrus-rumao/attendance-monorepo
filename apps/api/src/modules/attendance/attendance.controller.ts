@@ -20,7 +20,9 @@ const getDayFromDate = (date: string): string => {
 /* ---------------- CONTROLLERS ---------------- */
 
 export const markAttendance = async (req: Request, res: Response): Promise<Response> => {
+  console.log("NANANA")
   try {
+    console.log("HAHAHA")
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -48,9 +50,8 @@ export const markAttendance = async (req: Request, res: Response): Promise<Respo
     if (!timetable) {
       return res.status(400).json({ message: 'No timetable found' });
     }
-
     const dayRaw = getDayFromDate(date);
-
+    console.log("dayRaw:", dayRaw);
     if (!DAYS.includes(dayRaw as Day)) {
       return res.status(400).json({ message: 'Invalid day' });
     }
@@ -59,6 +60,7 @@ export const markAttendance = async (req: Request, res: Response): Promise<Respo
 
     const daySlots = timetable[day] || [];
 
+    console.log(daySlots);
     const matchingSlot = daySlots.find(
       (slot: ITimetableSlot) =>
         slot.subjectId.toString() === subjectId &&

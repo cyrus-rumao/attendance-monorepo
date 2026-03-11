@@ -20,7 +20,6 @@ export const TimetableSaveSchema = z.object({
   thursday: z.array(TimetableSaveSlotSchema).optional(),
   friday: z.array(TimetableSaveSlotSchema).optional(),
   saturday: z.array(TimetableSaveSlotSchema).optional(),
-  sunday: z.array(TimetableSaveSlotSchema).optional(),
 });
 
 export const DaySchema = z.array(TimetableSlotSchema);

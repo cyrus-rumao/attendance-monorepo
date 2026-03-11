@@ -31,6 +31,9 @@ export const getSubjects = async (req: Request, res: Response): Promise<Response
 
     const subjects = await Subject.find({ userId });
 
+    console.time('getSubjects response time');
+    console.log('Fetched subjects for user', userId, subjects.length);
+    console.timeEnd('getSubjects response time');
     return res.json(subjects);
   } catch (error) {
     console.error(error);

@@ -13,7 +13,7 @@
     "strict": true,
     "target": "es2022",
     "paths": {
-      "@attendance/schemas": ["libs/schemas/src/index"],
+      "@attendance/schemas": ["libs/schemas/src/index.ts"],
       "@attendance/schemas/*": ["libs/schemas/src/*"]
     }
   }

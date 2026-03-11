@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, Lock, Mail, X, Trash2, Eye, EyeOff, Edit, Save } from 'lucide-react';
 import { useAuthStore } from '../../features/auth/stores/useAuthStore';
 import type { LoginInput } from '@attendance/schemas';
@@ -9,7 +8,7 @@ type ActionType = 'delete' | 'edit';
 interface EditFormData {
   name: string;
   code: string;
-  type: 'lecture' | 'lab' | 'break';
+  type: 'lecture' | 'lab' 
 }
 
 interface ActionConfirmationModalProps {
@@ -19,7 +18,7 @@ interface ActionConfirmationModalProps {
   action: ActionType;
   subjectName: string;
   subjectCode: string;
-  subjectType: 'lecture' | 'lab' | 'break';
+  subjectType: 'lecture' | 'lab';
   loading: boolean;
 }
 
@@ -116,27 +115,19 @@ const ActionConfirmationModal: React.FC<ActionConfirmationModalProps> = ({
       setVerifying(false);
     }
   };
-
+if(!isOpen) return null;
   return (
-    <AnimatePresence>
-      {isOpen && (
         <>
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
+          
             onClick={handleClose}
             className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
           />
 
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            <div
               className="w-full max-w-md bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden"
             >
               {step === 'warning' ? (
@@ -340,19 +331,17 @@ const ActionConfirmationModal: React.FC<ActionConfirmationModalProps> = ({
                   </div>
 
                   {/* Error Message */}
-                  <AnimatePresence>
+                 
                     {error && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
+                      <div
+                        
                         className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-2"
                       >
                         <AlertTriangle className="w-4 h-4 text-red-400" />
                         <p className="text-sm text-red-400">{error}</p>
-                      </motion.div>
+                      </div>
                     )}
-                  </AnimatePresence>
+            
 
                   {/* Auth Form */}
                   <form onSubmit={handleConfirmAction} className="space-y-4">
@@ -449,13 +438,7 @@ const ActionConfirmationModal: React.FC<ActionConfirmationModalProps> = ({
                       >
                         {verifying || loading ? (
                           <>
-                            <motion.div
-                              animate={{ rotate: 360 }}
-                              transition={{
-                                duration: 1,
-                                repeat: Infinity,
-                                ease: 'linear',
-                              }}
+                            <div     
                               className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
                             />
                             <span>
@@ -463,8 +446,7 @@ const ActionConfirmationModal: React.FC<ActionConfirmationModalProps> = ({
                             </span>
                           </>
                         ) : (
-                          <>
-                            {isDelete ? (
+                            isDelete ? (
                               <>
                                 <Trash2 className="w-4 h-4" />
                                 <span>Delete Subject</span>
@@ -474,20 +456,17 @@ const ActionConfirmationModal: React.FC<ActionConfirmationModalProps> = ({
                                 <Save className="w-4 h-4" />
                                 <span>Save Changes</span>
                               </>
-                            )}
-                          </>
+                            )
                         )}
                       </button>
                     </div>
                   </form>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
         </>
       )}
-    </AnimatePresence>
-  );
-};
+    
 
 export default ActionConfirmationModal;

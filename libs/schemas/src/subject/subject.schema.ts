@@ -4,7 +4,7 @@ export const SubjectSchema = z.object({
   userId: z.string(),
   name: z.string(),
   code: z.string(),
-  type: z.enum(['lecture', 'lab', 'break'], "Type must be either 'lecture', 'lab' or 'break'"),
+  type: z.enum(['lecture', 'lab'], "Type must be either 'lecture', 'lab'"),
   createdAt: z.string(),
   updatedAt: z.string(),
   __v: z.number(),
@@ -13,8 +13,8 @@ export const SubjectSchema = z.object({
 export const AddsubjectSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   code: z.string().min(1, 'Code is required'),
-  type: z.enum(['lecture', 'lab', 'break'], {
-    message: "Type must be either 'lecture', 'lab' or 'break'",
+  type: z.enum(['lecture', 'lab'], {
+    message: "Type must be either 'lecture', 'lab'",
   }),
 });
 

@@ -4,7 +4,6 @@ import { BookOpen, FlaskConical, Plus, Search, Filter } from 'lucide-react';
 import SubjectCard from '../components/subject-card';
 // import axios from '../lib/axios';
 import AddSubjectModal from '../components/add-subject';
-
 // import type { Subject } from '../schemas/subject.schema';
 import { useSubjectStore } from '../stores/useSubjectStore';
 
@@ -28,7 +27,7 @@ const Subjects: React.FC = () => {
   };
   useEffect(() => {
     fetchSubjects();
-  }, []);
+  },[]);
 
   // Filter subjects based on search and type
   const filteredSubjects = subjects.filter((subject) => {
@@ -140,7 +139,7 @@ const Subjects: React.FC = () => {
                 transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                 className="w-12 h-12 border-4 border-zinc-800 border-t-amber-500 rounded-full mx-auto mb-4"
               />
-              <p className="text-zinc-500">Loading subjects...</p>
+              <p className="text-zinc-500">Loading Subjects...</p>
             </div>
           </div>
         ) : filteredSubjects.length === 0 ? (

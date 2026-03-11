@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Subject } from '@attendance/schemas';
-import { motion } from 'framer-motion';
+
 import { BookOpen, Edit, FlaskConical, Trash2 } from 'lucide-react';
 import { useSubjectStore } from '../stores/useSubjectStore';
 import ActionConfirmationModal from '../../../shared/components/action-confirmation';
@@ -55,8 +55,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject }) => {
         loading={loading}
       />
 
-      <motion.div
-        whileHover={{ y: -4 }}
+      <div
         className="group relative bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-6 hover:border-amber-500/50 transition-all duration-300"
       >
         {/* Glow effect on hover */}
@@ -133,7 +132,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject }) => {
             </button>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

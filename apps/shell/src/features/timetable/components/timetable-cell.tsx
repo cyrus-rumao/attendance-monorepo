@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, FlaskConical, X } from 'lucide-react';
+import {  X } from 'lucide-react';
 import type { TimetableSlot } from '@attendance/schemas';
 import type { Subject } from '@attendance/schemas';
 import type { Day } from '@attendance/schemas';
@@ -96,17 +96,12 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
 
       {/* Content */}
       <div className="flex flex-col h-full justify-center">
-        <div className="flex items-start gap-1 mb-1">
-          {isLab ? (
-            <FlaskConical className="w-3 h-3 text-purple-400 shrink-0 mt-0.5" />
-          ) : (
-            <BookOpen className="w-3 h-3 text-amber-400 shrink-0 mt-0.5" />
-          )}
+          
 
-          <h3 className="font-medium text-white text-[11px] leading-snug line-clamp-2">
+          <h3 className="font-medium text-white text-[10px] leading-snug   heloo line-clamp-2">
             {slot.subjectId.name}
           </h3>
-        </div>
+        
 
         <div className="text-[10px] text-zinc-500">
           {slot.startTime} - {slot.endTime}

@@ -38,77 +38,87 @@ interface AttendanceStore {
 }
 
 export const useAttendanceStore = create<AttendanceStore>((set, get) => ({
-	attendanceByDate: [],
-	loading: false,
+  attendanceByDate: [],
+  loading: false,
 
-	// ---------- GET BY DATE ----------
-	getAttendanceByDate: async (date) => {
-		set({ loading: true });
+  // ---------- GET BY DATE ----------
+  getAttendanceByDate: async (date) => {
+    set({ loading: true });
 
-		try {
-			const res = await axios.get('/attendance', {
-				params: { date },
-			});
+    try {
+      const res = await axios.get('/attendance', {
+        params: { date },
+      });
 
-			set({
-				attendanceByDate: res.data,
-				loading: false,
-			});
-		} catch (error: unknown) {
-			const err = error as AxiosError<{ message?: string }>;
-			notify.error(err.response?.data?.message || 'Failed to fetch attendance');
-			set({ attendanceByDate: [], loading: false });
-		}
-	},
+      set({
+        attendanceByDate: res.data,
+        loading: false,
+      });
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message?: string }>;
+      notify.error(err.response?.data?.message || 'Failed to fetch attendance');
+      set({ attendanceByDate: [], loading: false });
+    }
+  },
 
-	// ---------- MARK ----------
-	markAttendance: async (data) => {
-		set({ loading: true });
+  // ---------- MARK ----------
+  markAttendance: async (data) => {
+    set({ loading: true });
 
-		try {
-			const res = await axios.post('/attendance', data);
+    try {
+      const res = await axios.post('/attendance', data);
+      const newRecord = res.data;
 
-			// Add new record to today's state instantly
-			set({
-				attendanceByDate: [...get().attendanceByDate, res.data],
-				loading: false,
-			});
+      set((state) => {
+        const filtered = state.attendanceByDate.filter(
+          (a) =>
+            !(
+              a.subjectId._id === newRecord.subjectId._id &&
+              a.date === newRecord.date &&
+              a.startTime === newRecord.startTime &&
+              a.endTime === newRecord.endTime
+            ),
+        );
 
-			notify.success('Attendance marked');
-			return true;
-		} catch (error: unknown) {
-			const err = error as AxiosError<{ message?: string }>;
-			notify.error(err.response?.data?.message || 'Failed to mark attendance');
-			set({ loading: false });
-			return false;
-		}
-	},
+        return {
+          attendanceByDate: [...filtered, newRecord],
+          loading: false,
+        };
+      });
 
-	// ---------- DELETE ----------
-	deleteAttendance: async (id) => {
-		set({ loading: true });
+      notify.success('Attendance marked');
+      return true;
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message?: string }>;
+      notify.error(err.response?.data?.message || 'Failed to mark attendance');
+      set({ loading: false });
+      return false;
+    }
+  },
 
-		try {
-			await axios.delete(`/attendance/${id}`);
+  // ---------- DELETE ----------
+  deleteAttendance: async (id) => {
+    set({ loading: true });
 
-			set({
-				attendanceByDate: get().attendanceByDate.filter((a) => a._id !== id),
-				loading: false,
-			});
+    try {
+      await axios.delete(`/attendance/${id}`);
 
-			notify.success('Attendance deleted');
-			return true;
-		} catch (error: unknown) {
-			const err = error as AxiosError<{ message?: string }>;
-			notify.error(
-				err.response?.data?.message || 'Failed to delete attendance',
-			);
-			set({ loading: false });
-			return false;
-		}
-	},
+      set({
+        attendanceByDate: get().attendanceByDate.filter((a) => a._id !== id),
+        loading: false,
+      });
 
-	resetAttendance: () => {
-		set({ attendanceByDate: [] });
-	},
+      notify.success('Attendance deleted');
+      return true;
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message?: string }>;
+      notify.error(err.response?.data?.message || 'Failed to delete attendance');
+      set({ loading: false });
+      return false;
+    }
+  },
+
+  resetAttendance: () => {
+    set({ attendanceByDate: [] });
+  },
 }));

@@ -27,7 +27,7 @@ const DraggableSubjectItem: React.FC<DraggableSubjectItemProps> = ({
         <div className={`w-3 h-3 rounded-full ${isLab ? 'bg-purple-500' : 'bg-amber-500'}`} />
         <div>
           <p className="text-sm font-medium text-white">{subject.name}</p>
-          <p className="text-xs text-zinc-500 font-mono">{subject.code}</p>
+          {/* <p className="text-xs text-zinc-500 font-mono">{subject.code}</p> */}
         </div>
       </div>
 
