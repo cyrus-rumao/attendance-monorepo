@@ -4,6 +4,7 @@ import { useAuthStore } from '../src/features/auth/stores/useAuthStore';
 import { lazy, Suspense } from 'react';
 import LoadingSpinner from './shared/components/loading-spinner';
 import Navbar from './shared/components/navbar';
+import Sidebar from './shared/components/sidebar';
 
 const Home = lazy(() => import('./pages/home'));
 const Login = lazy(() => import('./features/auth/pages/login'));
@@ -27,11 +28,11 @@ const App: React.FC = () => {
 
   return (
     <>
-      {user && <Navbar />}
-      {/* <Navbar /> */}
+      <Navbar />
+      {user && <Sidebar />}
       <div
         className={`relative min-h-screen bg-[radial-gradient(circle_at_center,#241d0b_0%,black_70%)] text-white 
-        ${user ? 'pl-72' : ''}`}
+        ${user ? 'pl-72 pt-16' : 'pt-16'}`}
       >
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
