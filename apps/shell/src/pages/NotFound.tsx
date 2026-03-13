@@ -9,7 +9,7 @@ const NotFound: React.FC = () => {
 	return (
 		<div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
 			<div className="max-w-xl w-full text-center">
-				{/* Icon */}
+		
 				<motion.div
 					initial={{ scale: 0.8, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
@@ -18,7 +18,7 @@ const NotFound: React.FC = () => {
 					<AlertTriangle className="w-16 h-16 text-red-400" />
 				</motion.div>
 
-				{/* 404 */}
+			
 				<motion.h1
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -43,7 +43,7 @@ const NotFound: React.FC = () => {
 					The page you're looking for doesn’t exist or has been moved.
 				</motion.p>
 
-				{/* Buttons */}
+		
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}

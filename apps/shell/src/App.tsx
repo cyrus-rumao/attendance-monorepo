@@ -1,32 +1,27 @@
-import { Routes, Route, Navigate, Link } from 'react-router-dom';
-import { useEffect} from 'react';
-
-import Navbar from './shared/components/navbar';
-import LoadingSpinner from './shared/components/loading-spinner';
-import Home from './pages/home';
-import Login from './features/auth/pages/login';
-import Signup from './features/auth/pages/signup';
-import DashboardPage from './features/attendance/pages/dashboard';
-import Timetable from './features/timetable/pages/timetable';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useAuthStore } from '../src/features/auth/stores/useAuthStore';
-import Subjects from '../src/features/subjects/pages/subjects';
-import SubjectDetail from '../src/features/subjects/pages/subject-detail';
-import Today from '../src/features/attendance/pages/today';
-import NotFound from './pages/NotFound';
-import CreateTimetable from '../src/features/timetable/pages/create-timetable';
-// import type { User } from './schemas/user.schema';
-// import type { User } from './schemas/user.schema';
+import { lazy, Suspense } from 'react';
+import LoadingSpinner from './shared/components/loading-spinner';
+import Navbar from './shared/components/navbar';
 
-// ---- types ----
+const Home = lazy(() => import('./pages/home'));
+const Login = lazy(() => import('./features/auth/pages/login'));
+const Signup = lazy(() => import('./features/auth/pages/signup'));
+const DashboardPage = lazy(() => import('./features/attendance/pages/dashboard'));
+const Timetable = lazy(() => import('./features/timetable/pages/timetable'));
+const Subjects = lazy(() => import('./features/subjects/pages/subjects'));
+const SubjectDetail = lazy(() => import('./features/subjects/pages/subject-detail'));
+const Today = lazy(() => import('./features/attendance/pages/today'));
+const CreateTimetable = lazy(() => import('./features/timetable/pages/create-timetable'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const App: React.FC = () => {
   const { user, checkAuth, checkingAuth } = useAuthStore();
-
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-
-  if (checkingAuth && !user) {
+  if (checkingAuth) {
     return <LoadingSpinner />;
   }
 
@@ -35,10 +30,10 @@ const App: React.FC = () => {
       {user && <Navbar />}
       {/* <Navbar /> */}
       <div
-        className={`min-h-screen bg-[radial-gradient(circle_at_center,#241d0b_0%,black_70%)] text-white 
+        className={`relative min-h-screen bg-[radial-gradient(circle_at_center,#241d0b_0%,black_70%)] text-white 
         ${user ? 'pl-72' : ''}`}
       >
-        <div className="relative">
+        <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<Home />} />
 
@@ -47,6 +42,7 @@ const App: React.FC = () => {
             <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/dashboard" />} />
 
             <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/" />} />
+
             <Route path="/subjects" element={user ? <Subjects /> : <Navigate to="/" />} />
             <Route path="/timetable" element={user ? <Timetable /> : <Navigate to="/" />} />
             <Route
@@ -61,30 +57,8 @@ const App: React.FC = () => {
 
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </div>
+        </Suspense>
       </div>
-      {/* <div className="fixed top-4 right-4 z-50 flex items-center gap-3">
-        {!user ? (
-          <>
-            <Link
-              to="/login"
-              className="rounded-md border border-amber-900/50 px-4 py-2 text-sm font-medium text-amber-100/80 transition hover:border-amber-500 hover:text-amber-100"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="rounded-full bg-amber-600 px-5 py-2 text-sm font-semibold text-black transition-all duration-300 hover:bg-amber-500 hover:shadow-[0_0_15px_rgba(217,119,6,0.4)]"
-            >
-              Sign Up
-            </Link>
-          </>
-        ) : (
-          <div className="rounded-md border border-amber-900/40 bg-black/40 px-4 py-2 text-sm font-medium text-amber-100 backdrop-blur-md">
-            {user.name}
-          </div>
-        )}
-      </div> */}
     </>
   );
 };

@@ -1,5 +1,12 @@
-export default function Dashboard() {
+// import React from 'react'
+
+const dashboard = () => {
+	console.log("HALLO")
 	return (
-		<div>This is the dashboard page.</div>
-	);
+		<div>dashboard</div>
+
+		
+	)
 }
+
+export default dashboard

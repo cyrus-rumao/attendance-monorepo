@@ -60,11 +60,9 @@ const CreateTimetable: React.FC = () => {
   const handleDrop = (day: Day, time: string) => {
     if (!draggedSubject) return;
 
-    // Calculate end time based on subject type
     const isLab = draggedSubject.type === 'lab';
     const endTime = calculateEndTime(time, isLab);
 
-    // Check for ANY overlap with existing slots
     const daySlots = localTimetable[day] || [];
     const newStartMinutes = timeToMinutes(time);
     const newEndMinutes = timeToMinutes(endTime);
@@ -73,7 +71,6 @@ const CreateTimetable: React.FC = () => {
       const existingStart = timeToMinutes(existingSlot.startTime);
       const existingEnd = timeToMinutes(existingSlot.endTime);
 
-      // Check if the new slot overlaps with existing slot
       return (
         (newStartMinutes >= existingStart && newStartMinutes < existingEnd) ||
         (newEndMinutes > existingStart && newEndMinutes <= existingEnd) ||
@@ -137,7 +134,6 @@ const CreateTimetable: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white pb-12">
-      {/* Header */}
       <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-[1800px] mx-auto px-8 py-6">
           <div className="flex items-center justify-between">
@@ -156,10 +152,8 @@ const CreateTimetable: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-[1800px] mx-auto px-8 py-8">
         <div className="flex gap-6">
-          {/* Subjects Sidebar */}
           <SubjectsSidebar
             subjects={subjects}
             searchQuery={searchQuery}
@@ -168,7 +162,6 @@ const CreateTimetable: React.FC = () => {
             onDragEnd={handleDragEnd}
           />
 
-          {/* Timetable Grid */}
           <TimetableGrid
             timetable={localTimetable}
             mode="create"

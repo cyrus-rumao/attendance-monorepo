@@ -2,17 +2,29 @@ import User from './user.model';
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { redis } from '../../config/redis';
-import { Request, Response } from 'express';
+import { CookieOptions, Request, Response } from 'express';
+import { AUTH_CONFIG } from '../../config/auth.config';
 interface TokenPayload extends JwtPayload {
   userId: string;
 }
+
+const getRefreshTokenKey = (userId: string): string => `refresh_token:${userId}`;
+
+const createCookieOptions = (maxAge: number): CookieOptions => ({
+  ...AUTH_CONFIG.cookie,
+  maxAge,
+});
+
+const getTokenFromCookies = (req: Request, cookieName: string): string | undefined =>
+  req.cookies?.[cookieName];
+
 const generateTokens = (userId: string) => {
   const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET as string, {
-    expiresIn: '15m',
+    expiresIn: AUTH_CONFIG.accessToken.expiresIn,
   });
 
   const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET as string, {
-    expiresIn: '7d',
+    expiresIn: AUTH_CONFIG.refreshToken.expiresIn,
   });
 
   return { accessToken, refreshToken };
@@ -22,25 +34,23 @@ const storeRefreshToken = async (refreshToken: string, userId: string): Promise<
   const user = await User.findById(userId).select('email');
   if (!user) return;
 
-  await redis.hset(`refresh_token:${userId}`, 'token', refreshToken, 'email', user.email);
+  await redis.hset(getRefreshTokenKey(userId), 'token', refreshToken, 'email', user.email);
 
-  await redis.expire(`refresh_token:${userId}`, 7 * 24 * 60 * 60);
+  await redis.expire(getRefreshTokenKey(userId), AUTH_CONFIG.refreshToken.redisTTL);
 };
 
 const setCookies = (res: Response, accessToken: string, refreshToken: string): void => {
-  res.cookie('accessToken', accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 15 * 60 * 1000,
-  });
+  res.cookie(
+    AUTH_CONFIG.accessToken.cookieName,
+    accessToken,
+    createCookieOptions(AUTH_CONFIG.accessToken.maxAge),
+  );
 
-  res.cookie('refreshToken', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
+  res.cookie(
+    AUTH_CONFIG.refreshToken.cookieName,
+    refreshToken,
+    createCookieOptions(AUTH_CONFIG.refreshToken.maxAge),
+  );
 };
 
 export const signup = async (req: Request, res: Response): Promise<Response> => {
@@ -86,7 +96,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     const { accessToken, refreshToken } = generateTokens(user._id.toString());
     await storeRefreshToken(refreshToken, user._id.toString());
     setCookies(res, accessToken, refreshToken);
-    console.log('HAHAH');
     return res.status(200).json({
       success: true,
       message: 'Login successful',
@@ -107,26 +116,18 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
 export const logout = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const token = req.cookies?.refreshToken;
+    const token = getTokenFromCookies(req, AUTH_CONFIG.refreshToken.cookieName);
     if (!token) {
       return res.status(400).json({ message: 'No Refresh Token Found' });
     }
 
     const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string) as TokenPayload;
 
-    await redis.del(`refresh_token:${decoded.userId}`);
+    await redis.del(getRefreshTokenKey(decoded.userId));
 
-    res.clearCookie('accessToken', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
+    res.clearCookie(AUTH_CONFIG.accessToken.cookieName, AUTH_CONFIG.cookie);
 
-    res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
+    res.clearCookie(AUTH_CONFIG.refreshToken.cookieName, AUTH_CONFIG.cookie);
     return res.status(200).json({ success: true });
   } catch {
     return res.status(500).json({ message: 'Logout failed' });
@@ -135,14 +136,14 @@ export const logout = async (req: Request, res: Response): Promise<Response> => 
 
 export const refreshToken = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const token = req.cookies?.refreshToken;
+    const token = getTokenFromCookies(req, AUTH_CONFIG.refreshToken.cookieName);
     if (!token) {
       return res.status(400).json({ message: 'No Refresh Token Found' });
     }
 
     const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string) as TokenPayload;
 
-    const storedToken = await redis.hget(`refresh_token:${decoded.userId}`, 'token');
+    const storedToken = await redis.hget(getRefreshTokenKey(decoded.userId), 'token');
 
     if (storedToken !== token) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -151,15 +152,14 @@ export const refreshToken = async (req: Request, res: Response): Promise<Respons
     const accessToken = jwt.sign(
       { userId: decoded.userId },
       process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '15m' },
+      { expiresIn: AUTH_CONFIG.accessToken.expiresIn },
     );
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000,
-    });
+    res.cookie(
+      AUTH_CONFIG.accessToken.cookieName,
+      accessToken,
+      createCookieOptions(AUTH_CONFIG.accessToken.maxAge),
+    );
 
     return res.status(200).json({ success: true });
   } catch {

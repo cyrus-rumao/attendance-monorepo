@@ -1,4 +1,4 @@
-// console.log('🔥 SERVER BOOT');
+
 import dotenv from 'dotenv';
 dotenv.config({override: true});
 import express, { Application } from 'express';
@@ -10,7 +10,7 @@ import timetableRoutes from './modules/timetable/timetable.route.js';
 import attendanceRoutes from './modules/attendance/attendance.route.js';
 import { connectDB } from './config/db.js';
 const app: Application = express();
-
+connectDB();
 app.use(
   cors({
     origin: true,
@@ -33,5 +33,5 @@ const PORT = Number(process.env.PORT) || 4000;
 
 app.listen(PORT, async () => {
   console.log(`Server flaming on port ${PORT}`);
-  await connectDB();
+  
 });

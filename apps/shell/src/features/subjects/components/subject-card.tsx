@@ -58,11 +58,11 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject }) => {
       <div
         className="group relative bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-6 hover:border-amber-500/50 transition-all duration-300"
       >
-        {/* Glow effect on hover */}
+       
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300" />
 
         <div className="relative">
-          {/* Header */}
+          
           <div className="flex items-start justify-between mb-4">
             <div
               className={`p-3 rounded-xl border ${
@@ -88,7 +88,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject }) => {
             </span>
           </div>
 
-          {/* Content */}
+       
           <div className="mb-4">
             <h3 className="text-xl font-medium text-white mb-1 group-hover:text-amber-400 transition-colors">
               {subject.name}
@@ -96,7 +96,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject }) => {
             <p className="text-zinc-500 text-sm font-mono">{subject.code}</p>
           </div>
 
-          {/* Placeholder for attendance stats - you can add this later */}
+       
           <div className="mb-4 p-3 bg-zinc-950/50 rounded-lg border border-zinc-800">
             <div className="flex justify-between items-center mb-2">
               <span className="text-xs text-zinc-500">Attendance</span>
@@ -110,7 +110,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subject }) => {
             </div>
           </div>
 
-          {/* Actions */}
+      
           <div className="flex gap-2">
             <button
               onClick={() => navigate(`/subjects/${subject._id}`)}

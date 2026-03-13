@@ -20,9 +20,9 @@ const getDayFromDate = (date: string): string => {
 /* ---------------- CONTROLLERS ---------------- */
 
 export const markAttendance = async (req: Request, res: Response): Promise<Response> => {
-  console.log("NANANA")
+  // console.log("NANANA")
   try {
-    console.log("HAHAHA")
+    // console.log("HAHAHA")
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -154,7 +154,6 @@ export const getAttendanceSummary = async (req: Request, res: Response): Promise
   if (!req.user) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
-
   const userId = req.user._id;
 
   const records = await Attendance.find({

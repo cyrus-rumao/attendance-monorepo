@@ -4,8 +4,9 @@ import react from '@vitejs/plugin-react';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 import tailwindcss from '@tailwindcss/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 export default defineConfig(() => ({
-  
+    
   root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/apps/shell',
   server: {
@@ -18,6 +19,10 @@ export default defineConfig(() => ({
   },
   plugins: [
     react(),
+     visualizer({
+      open: true,
+      filename: "bundle-analysis.html"
+    }),
     tailwindcss(),
     nxViteTsPaths(),
     nxCopyAssetsPlugin(['*.md']),
@@ -35,3 +40,5 @@ export default defineConfig(() => ({
     },
   },
 }));
+
+

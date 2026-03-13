@@ -4,18 +4,18 @@ dotenv.config();
 const redisUrl = process.env.REDIS_URL;
 
 if (!redisUrl) {
-	throw new Error('❌ REDIS_URL is missing at runtime');
+  throw new Error('REDIS_URL is missing at runtime');
 }
 
 export const redis = new Redis(redisUrl, {
-	tls: {}, // required for Upstash
-	maxRetriesPerRequest: null,
+  tls: {}, // required for Upstash
+  maxRetriesPerRequest: null,
 });
 
 redis.on('connect', () => {
-	console.log('✅ Redis connected');
+  console.log('Redis connected');
 });
 
 redis.on('error', (err: Error) => {
-	console.error('❌ Redis error:', err.message);
+  console.error('Redis error:', err.message);
 });

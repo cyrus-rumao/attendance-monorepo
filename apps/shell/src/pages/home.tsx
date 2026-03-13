@@ -1,24 +1,15 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import {
-	Calendar,
-	Bell,
-	TrendingUp,
-	BarChart3,
-	Smartphone,
-	Target,
-} from 'lucide-react';
-// import img from '../assets/main.png';
+import { Calendar, Bell, TrendingUp, BarChart3, Smartphone, Target } from 'lucide-react';
 
 interface SectionProps {
-	title: string;
-	description: string;
-	imagePosition?: 'left' | 'right';
-	imageSrc?: string;
-	imageAlt: string;
-	children?: React.ReactNode;
-	darkBg?: boolean;
+  title: string;
+  description: string;
+  imagePosition?: 'left' | 'right';
+  imageSrc?: string;
+  imageAlt: string;
+  children?: React.ReactNode;
+  darkBg?: boolean;
 }
 
 const Section: React.FC<SectionProps> = ({
@@ -31,52 +22,38 @@ const Section: React.FC<SectionProps> = ({
   darkBg = false,
 }) => {
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress: sectionProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-
-  const imageY = useTransform(sectionProgress, [0, 0.5, 1], [100, 0, -100]);
-  const imageOpacity = useTransform(sectionProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   return (
     <section
       ref={ref}
-      className={`min-h-screen flex items-center ${darkBg ? 'bg-black' : 'bg-zinc-950'} border-b border-zinc-900`}
+      className={`min-h-screen relative flex items-center ${darkBg ? 'bg-black' : 'bg-zinc-950'} border-b border-zinc-900`}
     >
       <div className="max-w-7xl mx-auto px-8 py-20 w-full">
         <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center`}>
-          {/* Text Content */}
           <div className={imagePosition === 'left' ? 'lg:order-2' : ''}>
             <h2 className="text-5xl lg:text-6xl text-white mb-6 leading-tight">{title}</h2>
             <p className="text-lg text-zinc-400 leading-relaxed mb-8">{description}</p>
             {children}
           </div>
 
-          {/* Image */}
-          <motion.div
-            style={{ y: imageY, opacity: imageOpacity }}
-            className={`relative ${imagePosition === 'left' ? 'lg:order-1' : ''}`}
-          >
+          <div className={`relative ${imagePosition === 'left' ? 'lg:order-1' : ''}`}>
             <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-amber-500/20 bg-zinc-900">
               <img src={imageSrc} alt={imageAlt} className="w-full h-full object-cover" />
             </div>
             <div className="absolute -inset-1 bg-linear-to-r from-amber-500 to-yellow-600 rounded-2xl opacity-20 blur-xl -z-10" />
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
-//Hero Section
+
 const Home: React.FC = () => {
-	return (
-    <div className="bg-black text-white">
-      {/* Hero Section */}
+  return (
+    <div className="relative bg-black text-white">
       <section className="min-h-screen flex items-center bg-black">
         <div className="max-w-7xl mx-auto px-8 py-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left: Text */}
             <div>
               <div className="inline-block mb-4">
                 <span className="text-amber-500 text-sm font-medium tracking-wider uppercase">
@@ -110,7 +87,6 @@ const Home: React.FC = () => {
                 </button>
               </div>
 
-              {/* Stats */}
               <div className="grid grid-cols-3 gap-8 mt-16">
                 <div>
                   <div className="text-3xl text-white mb-1">50K+</div>
@@ -127,7 +103,6 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Right: Hero Image */}
             <div className="relative">
               <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-amber-500/20 bg-zinc-900">
                 <img
@@ -142,7 +117,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Section 2: Smart Notifications */}
       <Section
         title="Hourly Reminders That Actually Work"
         description="Get notified every hour to mark your attendance. Never forget a lecture again. One tap to mark present, bunk, or absent. It's that simple."
@@ -151,7 +125,7 @@ const Home: React.FC = () => {
         imageAlt="Notification Interface"
         darkBg={true}
       >
-        <div className="flex gap-4 mt-6">
+        <div className="relativeflex gap-4 mt-6">
           <div className="flex items-center gap-2 text-zinc-400">
             <Bell className="w-5 h-5 text-amber-500" />
             <span>Hourly Alerts</span>
@@ -163,7 +137,6 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
-      {/* Section 3: Real-time Analytics */}
       <Section
         title="Know Exactly Where You Stand"
         description="Real-time attendance tracking across all subjects. See your percentage live. Get instant calculations on how many lectures you need to attend to hit 75%."
@@ -183,7 +156,6 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
-      {/* Section 4: Subject Breakdown */}
       <Section
         title="Master Every Subject"
         description="Get detailed insights for each subject and lab. Identify which courses need more attention instantly. Color-coded system shows you critical subjects at a glance."
@@ -208,7 +180,6 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
-      {/* Section 5: Calendar View */}
       <Section
         title="Visual Calendar That Makes Sense"
         description="Color-coded calendar showing your entire attendance history. See patterns, bunks, and lecture days at a glance. Plan ahead and make informed decisions."
@@ -228,7 +199,6 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
-      {/* Section 6: Mobile Experience */}
       <Section
         title="Works Everywhere You Do"
         description="Mark attendance from your phone during class. View analytics on your laptop. Everything syncs seamlessly across all your devices in real-time."
@@ -249,7 +219,6 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
-      {/* Final CTA Section */}
       <section className="min-h-screen flex items-center bg-zinc-950">
         <div className="max-w-4xl mx-auto px-8 py-20 text-center">
           <div>

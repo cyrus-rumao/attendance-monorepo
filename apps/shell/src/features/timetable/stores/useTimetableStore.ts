@@ -12,7 +12,6 @@ import {
   type TimetableSlot,
 } from '@attendance/schemas';
 
-// ---------- STORE TYPE ----------
 interface TimetableStore {
   timetable: Timetable | null;
   loading: boolean;
@@ -25,19 +24,16 @@ interface TimetableStore {
   resetTimetable: () => void;
 }
 
-// ---------- STORE ----------
 export const useTimetableStore = create<TimetableStore>((set, get) => ({
   timetable: null,
   loading: false,
 
-  // ---------- GET TIMETABLE ----------
   getTimetable: async () => {
     set({ loading: true });
 
     try {
       const res = await axios.get('/timetable');
 
-      // 🔐 validate API response
       const parsed = TimetableSchema.parse(res.data);
 
       set({ timetable: parsed, loading: false });
@@ -53,19 +49,15 @@ export const useTimetableStore = create<TimetableStore>((set, get) => ({
     }
   },
 
-  // ---------- SAVE / EDIT TIMETABLE ----------
   saveTimetable: async (timetableData) => {
     set({ loading: true });
 
     try {
-      // console.log('No timetable');
       console.log(timetableData);
-      // 🔐 validate before sending
       const validated = TimetableSaveSchema.parse(timetableData);
       console.log('Validated Timetable: ', validated);
       const res = await axios.post('/timetable', validated);
 
-      // 🔐 validate response too
       const parsed = TimetableSchema.parse(res.data);
 
       set({ timetable: parsed, loading: false });
@@ -80,7 +72,6 @@ export const useTimetableStore = create<TimetableStore>((set, get) => ({
     }
   },
 
-  // ---------- DELETE TIMETABLE ----------
   deleteTimetable: async () => {
     set({ loading: true });
 
@@ -97,15 +88,11 @@ export const useTimetableStore = create<TimetableStore>((set, get) => ({
     }
   },
 
-  // ---------- LOCAL UPDATE (UI ONLY) ----------
   updateDay: (day, slots) => {
     const timetable = get().timetable;
     if (!timetable) return;
 
-    // 🔐 validate UI input
     const parsedSlots = z.array(TimetableSlotSchema).safeParse(slots);
-    //parse -> throws error everything stops
-    //safeparse -> throws error in object form but doesnt stop everything
     if (!parsedSlots.success) {
       notify.error('Invalid timetable slot data');
       return;

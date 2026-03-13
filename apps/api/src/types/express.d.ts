@@ -1,4 +1,4 @@
-import { IUser } from '../models/user.model.ts';
+import type { IUser } from '../modules/auth/user.model';
 
 declare global {
 	namespace Express {
@@ -7,3 +7,5 @@ declare global {
 		}
 	}
 }
+
+export {}
