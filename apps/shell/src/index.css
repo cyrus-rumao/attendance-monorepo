@@ -11,7 +11,7 @@
   body {
     font-family: var(--font-main);
     font-weight: 500;
-    /* 👈 THIS is the key */
+   
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
@@ -19,14 +19,14 @@
     color: white;
   }
 
-  /* Headings slightly heavier */
+ 
   h1,
   h2,
   h3 {
     font-weight: 700;
   }
 
-  /* Small text stays readable */
+
   small,
   .text-sm {
     font-weight: 500;

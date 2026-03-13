@@ -1,173 +1,160 @@
 import { create } from 'zustand';
 import axios from '../../../lib/axios';
 import { notify } from '../../../lib/utils';
-import {
-	SubjectSchema,
-	type Subject,
-	type AddSubjectInput,
-} from '@attendance/schemas';
-import {
-	SubjectDetailSchema,
-	type SubjectDetail,
-} from '@attendance/schemas';
+import { SubjectSchema, type Subject, type AddSubjectInput } from '@attendance/schemas';
+import { SubjectDetailSchema, type SubjectDetail } from '@attendance/schemas';
 
 interface UpdateSubjectData {
-	name?: string;
-	code?: string;
-	type?: 'lecture' | 'lab';
+  name?: string;
+  code?: string;
+  type?: 'lecture' | 'lab';
 }
 
 interface SubjectState {
-	subjects: Subject[];
-	selectedSubject: SubjectDetail | null;
-	loading: boolean;
+  subjects: Subject[];
+  selectedSubject: SubjectDetail | null;
+  loading: boolean;
 
-	getSubjects: () => Promise<void>;
-	addSubject: (subject: AddSubjectInput) => Promise<void>;
-	getSubjectAnalytics: (id: string) => Promise<void>;
-	deleteSubject: (id: string) => Promise<void>;
-	updateSubject: (subjectId: string, data: UpdateSubjectData) => Promise<void>;
-	clearSelectedSubject: () => void;
+  getSubjects: () => Promise<void>;
+  addSubject: (subject: AddSubjectInput) => Promise<void>;
+  getSubjectAnalytics: (id: string) => Promise<void>;
+  deleteSubject: (id: string) => Promise<void>;
+  updateSubject: (subjectId: string, data: UpdateSubjectData) => Promise<void>;
+  clearSelectedSubject: () => void;
 }
 
 export const useSubjectStore = create<SubjectState>((set, get) => ({
-	subjects: [],
-	selectedSubject: null,
-	loading: false,
+  subjects: [],
+  selectedSubject: null,
+  loading: false,
 
-	/* ---------------- GET ALL SUBJECTS ---------------- */
 
-	getSubjects: async () => {
-		try {
-			set({ loading: true });
 
-			const res = await axios.get('/subjects');
+  getSubjects: async () => {
+    try {
+      set({ loading: true });
+      // if (get().subjects.length) {
+      //   return;
+      // }
+      const res = await axios.get('/subjects');
 
-			const parsed = res.data.map((s: unknown) => SubjectSchema.parse(s));
+      const parsed = res.data.map((s: unknown) => SubjectSchema.parse(s));
 
-			set({
-				subjects: parsed,
-				loading: false,
-			});
-		} catch (error) {
-			set({ loading: false });
-			notify.error('Failed to fetch subjects');
-		}
-	},
+      set({
+        subjects: parsed,
+        loading: false,
+      });
+    } catch (error) {
+      set({ loading: false });
+      notify.error('Failed to fetch subjects');
+    }
+  },
 
-	/* ---------------- ADD SUBJECT ---------------- */
 
-	addSubject: async (subject) => {
-		try {
-			set({ loading: true });
 
-			const res = await axios.post('/subjects', subject);
+  addSubject: async (subject) => {
+    try {
+      set({ loading: true });
 
-			const parsed = SubjectSchema.parse(res.data);
+      const res = await axios.post('/subjects', subject);
 
-			set({
-				subjects: [...get().subjects, parsed],
-				loading: false,
-			});
+      const parsed = SubjectSchema.parse(res.data);
 
-			notify.success('Subject added successfully');
-		} catch (error) {
-			set({ loading: false });
-			notify.error('Failed to add subject');
-		}
-	},
+      set({
+        subjects: [...get().subjects, parsed],
+        loading: false,
+      });
 
-	/* ---------------- GET SUBJECT ANALYTICS ---------------- */
+      notify.success('Subject added successfully');
+    } catch (error) {
+      set({ loading: false });
+      notify.error('Failed to add subject');
+    }
+  },
 
-	getSubjectAnalytics: async (id: string) => {
-		try {
-			set({ loading: true });
 
-			const res = await axios.get(`/subjects/${id}`);
 
-			const parsed = SubjectDetailSchema.parse(res.data);
+  getSubjectAnalytics: async (id: string) => {
+    try {
+      set({ loading: true });
 
-			set({
-				selectedSubject: parsed,
-				loading: false,
-			});
-		} catch (error) {
-			set({ loading: false });
-			notify.error('Failed to fetch subject details');
-		}
-	},
+      const res = await axios.get(`/subjects/${id}`);
 
-	deleteSubject: async (subjectId: string) => {
-		try {
-			set({ loading: true });
+      const parsed = SubjectDetailSchema.parse(res.data);
 
-			// Send delete request - user is already authenticated via auth store
-			// Backend should verify the user owns this subject via the auth cookie/token
-			await axios.delete(`/subjects/${subjectId}`);
+      set({
+        selectedSubject: parsed,
+        loading: false,
+      });
+    } catch (error) {
+      set({ loading: false });
+      notify.error('Failed to fetch subject details');
+    }
+  },
 
-			// Remove from state
-			set({
-				subjects: get().subjects.filter((s) => s._id !== subjectId),
-				loading: false,
-			});
+  deleteSubject: async (subjectId: string) => {
+    try {
+      set({ loading: true });
 
-			notify.success('Subject and all records deleted successfully');
-		} catch (error: any) {
-			set({ loading: false });
+ 
+      await axios.delete(`/subjects/${subjectId}`);
 
-			// Handle specific error cases
-			if (error.response?.status === 403) {
-				notify.error('You do not have permission to delete this subject');
-			} else if (error.response?.status === 404) {
-				notify.error('Subject not found');
-			} else {
-				notify.error(
-					error.response?.data?.message || 'Failed to delete subject',
-				);
-			}
-			throw error; // Re-throw to handle in component if needed
-		}
-	},
-	/* ---------------- UPDATE SUBJECT ---------------- */
+    
+      set({
+        subjects: get().subjects.filter((s) => s._id !== subjectId),
+        loading: false,
+      });
 
-	updateSubject: async (subjectId: string, data: UpdateSubjectData) => {
-		try {
-			set({ loading: true });
+      notify.success('Subject and all records deleted successfully');
+    } catch (error: any) {
+      set({ loading: false });
 
-			// Send update request - user is already authenticated via auth store
-			const res = await axios.put<Subject>(`/subjects/${subjectId}`, data);
+      if (error.response?.status === 403) {
+        notify.error('You do not have permission to delete this subject');
+      } else if (error.response?.status === 404) {
+        notify.error('Subject not found');
+      } else {
+        notify.error(error.response?.data?.message || 'Failed to delete subject');
+      }
+      throw error;
+    }
+  },
 
-			// Update in state
-			set({
-				subjects: get().subjects.map((s) =>
-					s._id === subjectId ? res.data : s,
-				),
-				loading: false,
-			});
 
-			notify.success('Subject updated successfully');
-		} catch (error: any) {
-			set({ loading: false });
+  updateSubject: async (subjectId: string, data: UpdateSubjectData) => {
+    try {
+      set({ loading: true });
 
-			// Handle specific error cases
-			if (error.response?.status === 403) {
-				notify.error('You do not have permission to update this subject');
-			} else if (error.response?.status === 404) {
-				notify.error('Subject not found');
-			} else if (error.response?.status === 400) {
-				notify.error('Invalid subject data');
-			} else {
-				notify.error(
-					error.response?.data?.message || 'Failed to update subject',
-				);
-			}
-			throw error; // Re-throw to handle in component if needed
-		}
-	},
+      // Send update request - user is already authenticated via auth store
+      const res = await axios.put<Subject>(`/subjects/${subjectId}`, data);
 
-	/* ---------------- CLEAR ---------------- */
+      // Update in state
+      set({
+        subjects: get().subjects.map((s) => (s._id === subjectId ? res.data : s)),
+        loading: false,
+      });
 
-	clearSelectedSubject: () => {
-		set({ selectedSubject: null });
-	},
+      notify.success('Subject updated successfully');
+    } catch (error: any) {
+      set({ loading: false });
+
+      // Handle specific error cases
+      if (error.response?.status === 403) {
+        notify.error('You do not have permission to update this subject');
+      } else if (error.response?.status === 404) {
+        notify.error('Subject not found');
+      } else if (error.response?.status === 400) {
+        notify.error('Invalid subject data');
+      } else {
+        notify.error(error.response?.data?.message || 'Failed to update subject');
+      }
+      throw error; // Re-throw to handle in component if needed
+    }
+  },
+
+  
+
+  clearSelectedSubject: () => {
+    set({ selectedSubject: null });
+  },
 }));

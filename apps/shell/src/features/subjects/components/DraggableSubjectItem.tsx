@@ -22,16 +22,16 @@ const DraggableSubjectItem: React.FC<DraggableSubjectItemProps> = ({
       onDragEnd={onDragEnd}
       className="flex items-center justify-between p-3 rounded-lg border border-zinc-800 bg-zinc-950/50 hover:border-amber-500/50 cursor-grab active:cursor-grabbing transition"
     >
-      {/* Left: Color indicator + Name */}
+    
       <div className="flex items-center gap-3">
         <div className={`w-3 h-3 rounded-full ${isLab ? 'bg-purple-500' : 'bg-amber-500'}`} />
         <div>
           <p className="text-sm font-medium text-white">{subject.name}</p>
-          {/* <p className="text-xs text-zinc-500 font-mono">{subject.code}</p> */}
+          
         </div>
       </div>
 
-      {/* Right: Type badge */}
+ 
       <div
         className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-md ${
           isLab

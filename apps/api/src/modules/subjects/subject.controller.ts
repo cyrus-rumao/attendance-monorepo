@@ -11,7 +11,8 @@ type Day = (typeof DAYS)[number];
 
 export const createSubject = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user._id;
+    const user = req.user!;
+    const userId = user._id;
 
     const subject = await Subject.create({
       userId,
@@ -27,7 +28,8 @@ export const createSubject = async (req: Request, res: Response): Promise<Respon
 
 export const getSubjects = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user._id;
+    const user = req.user!;
+    const userId = user._id;
 
     const subjects = await Subject.find({ userId });
 
@@ -43,7 +45,8 @@ export const getSubjects = async (req: Request, res: Response): Promise<Response
 
 export const updateSubject = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user._id;
+    const user = req.user!;
+    const userId = user._id;
     const { id } = req.params;
 
     if (Array.isArray(id)) {
@@ -69,7 +72,8 @@ export const updateSubject = async (req: Request, res: Response): Promise<Respon
 
 export const deleteSubject = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const userId = req.user._id;
+      const user = req.user!;
+      const userId = user._id;
     const { id } = req.params;
 
     if (Array.isArray(id)) {
@@ -97,7 +101,7 @@ export const deleteSubject = async (req: Request, res: Response): Promise<Respon
 
     if (timetable) {
       DAYS.forEach((day: Day) => {
-        timetable[day] = timetable[day].filter(
+        timetable[day] = (timetable[day] || []).filter(
           (slot: ITimetableSlot) => slot.subjectId.toString() !== id,
         );
       });
@@ -115,11 +119,9 @@ export const deleteSubject = async (req: Request, res: Response): Promise<Respon
 };
 export const getFullSubjectAnalytics = async (req: Request, res: Response): Promise<Response> => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
-    const userId = req.user._id;
+  
+      const user = req.user!;
+      const userId = user._id;
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {

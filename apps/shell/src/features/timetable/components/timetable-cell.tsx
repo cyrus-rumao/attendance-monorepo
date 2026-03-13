@@ -36,7 +36,7 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
 }) => {
   const isCompactCell = rowSpan <= 1;
 
-  // ================= EMPTY CELL =================
+
   if (!slot) {
     if (mode === 'view') {
       return (
@@ -50,7 +50,7 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
       );
     }
 
-    // Create mode: droppable
+  
     return (
       <div
         onDrop={() => onDrop?.(day, time)}
@@ -70,7 +70,7 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
     );
   }
 
-  // ================= CLASS SLOT =================
+
   const isLab = slot.subjectId.type === 'lab';
 
   return (
@@ -86,7 +86,7 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
         gridRow: `${timeIndex + 2} / span ${rowSpan}`,
       }}
     >
-      {/* Delete button only in create mode */}
+   
       {mode === 'create' && (
         <button
           onClick={() => onRemoveSlot?.(day, slot)}
@@ -96,7 +96,7 @@ const TimetableCell: React.FC<TimetableCellProps> = ({
         </button>
       )}
 
-      {/* Content */}
+    
       <div className="flex h-full min-h-0 flex-col justify-center gap-1 pr-6">
         <h3
           className={`font-medium text-white leading-tight break-words ${

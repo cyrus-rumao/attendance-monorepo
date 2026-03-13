@@ -8,6 +8,7 @@ export const signupValidation = (req: Request, res: Response, next: NextFunction
     res.status(400).json({
       message: result.error.issues[0].message,
     });
+    return;
   }
 
   req.body = result.data;
@@ -20,6 +21,7 @@ export const loginValidation = (req: Request, res: Response, next: NextFunction)
     res.status(400).json({
       message: result.error.issues[0].message,
     });
+    return;
   }
 
   req.body = result.data;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Coffee } from 'lucide-react';
 import { useTimetableStore } from '../stores/useTimetableStore';
@@ -10,8 +10,6 @@ const Timetable: React.FC = () => {
   const navigate = useNavigate();
   const { timetable, loading, getTimetable } = useTimetableStore();
 
-  // Generate time slots in 30-minute increments from 8:00 AM to 6:00 PM
-
   useEffect(() => {
     getTimetable();
   }, [getTimetable]);
@@ -20,11 +18,7 @@ const Timetable: React.FC = () => {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            className="w-12 h-12 border-4 border-zinc-800 border-t-amber-500 rounded-full mx-auto mb-4"
-          />
+          <div className="w-12 h-12 border-4 border-zinc-800 border-t-amber-500 rounded-full mx-auto mb-4" />
           <p className="text-zinc-500">Loading timetable...</p>
         </div>
       </div>
@@ -45,7 +39,6 @@ const Timetable: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white pb-12">
-      {/* Header */}
       <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-400 mx-auto px-8 py-6">
           <div className="flex items-center justify-between">
@@ -70,15 +63,12 @@ const Timetable: React.FC = () => {
         </div>
       </div>
 
-      {/* Timetable Grid */}
       <div className="max-w-400 mx-auto px-8 py-8">
         <TimetableGrid
           timetable={timetable}
           mode="view"
           onSlotClick={(slot) => navigate(`/subjects/${slot.subjectId._id}`)}
         />
-
-        {/* Legend */}
       </div>
     </div>
   );

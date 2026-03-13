@@ -93,17 +93,17 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
 
   return (
     <>
-      {/* Backdrop */}
+     
       <div onClick={handleClose} className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50" />
 
-      {/* Modal */}
+   
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="w-full max-w-2xl bg-linear-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl shadow-2xl relative overflow-hidden">
-          {/* Shine effect */}
+          
           <div className="absolute inset-0 bg-linear-to-r from-transparent via-amber-500/10 to-transparent" />
 
           <div className="relative z-10">
-            {/* Header */}
+         
             <div className="flex items-center justify-between p-6 border-b border-zinc-800">
               <div>
                 <h2 className="text-2xl font-light text-white mb-1">Add New Subject</h2>
@@ -118,10 +118,9 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
               </button>
             </div>
 
-            {/* Content */}
+          
             <div className="p-6 max-h-[70vh] overflow-y-auto">
-              {/* Success Message */}
-
+           
               {success && (
                 <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-500" />
@@ -131,7 +130,6 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
                 </div>
               )}
 
-              {/* Error Message */}
 
               {error && (
                 <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3">
@@ -141,7 +139,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Subject Type Selection */}
+               
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-3">
                     Subject Type
@@ -190,7 +188,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
                   </div>
                 </div>
 
-                {/* Subject Name */}
+            
                 <div className="relative">
                   <label htmlFor="name" className="block text-sm font-medium text-zinc-400 mb-2">
                     Subject Name
@@ -212,7 +210,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
                   )}
                 </div>
 
-                {/* Subject Code */}
+           
                 <div className="relative">
                   <label htmlFor="code" className="block text-sm font-medium text-zinc-400 mb-2">
                     Subject Code
@@ -236,7 +234,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
                   <p className="mt-2 text-xs text-zinc-500">Short code for easy identification</p>
                 </div>
 
-                {/* Preview Card */}
+             
                 <div className="mt-8 p-6 bg-zinc-950/50 border border-zinc-800 rounded-xl">
                   <p className="text-xs text-zinc-500 mb-3 uppercase tracking-wide">Preview</p>
                   <div className="flex items-center gap-4">
@@ -273,7 +271,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
                   </div>
                 </div>
 
-                {/* Submit Buttons */}
+              
                 <div className="flex gap-4 pt-4">
                   <button
                     type="button"
@@ -288,7 +286,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({ isOpen, onClose, onSu
                     disabled={loading || success}
                     className="flex-1 px-6 py-3 bg-linear-to-r from-amber-500 to-yellow-600 text-black font-medium rounded-lg hover:opacity-90 transition disabled:opacity-50 relative overflow-hidden"
                   >
-                    {/* Button shine effect */}
+               
                     <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent" />
 
                     <span className="relative flex items-center justify-center gap-2">

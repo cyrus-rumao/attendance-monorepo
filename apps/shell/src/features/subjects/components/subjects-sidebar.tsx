@@ -27,7 +27,7 @@ const SubjectsSidebar: React.FC<SubjectsSidebarProps> = ({
       <div className="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-6 sticky top-32">
         <h2 className="text-xl font-medium text-white mb-4">Subjects</h2>
 
-        {/* Search */}
+    
         <div className="mb-4">
           <div className="relative">
             <input
@@ -42,7 +42,7 @@ const SubjectsSidebar: React.FC<SubjectsSidebarProps> = ({
           </div>
         </div>
 
-        {/* Subject Cards */}
+        
         <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
           {filteredSubjects.map((subject) => (
             <DraggableSubjectItem

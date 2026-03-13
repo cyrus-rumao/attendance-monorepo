@@ -71,7 +71,7 @@ const SubjectDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
+     
       <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-8 py-6">
           <div className="flex items-start gap-4">
@@ -107,9 +107,9 @@ const SubjectDetail: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+  
       <div className="max-w-7xl mx-auto px-8 py-12">
-        {/* Stats Overview Grid */}
+  
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           <div className="bg-linear-to-br from-zinc-900 to-black border border-zinc-800 rounded-xl p-4">
             <div className="flex items-center gap-2 text-zinc-400 text-sm mb-2">
@@ -148,13 +148,12 @@ const SubjectDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Attendance Overview */}
+      
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-          {/* Main Stats Card */}
+    
           <div className="lg:col-span-2 bg-linear-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-8">
             <h2 className="text-2xl font-light text-white mb-6">Attendance Overview</h2>
 
-            {/* Percentage Circle */}
             <div className="flex items-center gap-8 mb-8">
               <div className="relative w-40 h-40">
                 <svg className="w-full h-full transform -rotate-90">
@@ -226,7 +225,7 @@ const SubjectDetail: React.FC = () => {
               </div>
             </div>
 
-            {/* Progress Bar */}
+      
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-zinc-400">Progress to 75%</span>
@@ -247,7 +246,7 @@ const SubjectDetail: React.FC = () => {
             </div>
           </div>
 
-          {/* Insights Card */}
+        
           <div className="space-y-6">
             {analytics.attendancePercentage >= 75 ? (
               <div className="bg-linear-to-br from-green-900/20 to-black border border-green-500/30 rounded-2xl p-6">
@@ -335,7 +334,7 @@ const SubjectDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Additional Info */}
+        
         {analytics.totalConductedHours > 0 && (
           <div className="bg-linear-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-8">
             <h2 className="text-2xl font-light text-white mb-6">Detailed Breakdown</h2>

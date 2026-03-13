@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, FlaskConical, Plus, Search, Filter } from 'lucide-react';
 import SubjectCard from '../components/subject-card';
@@ -9,44 +9,38 @@ import { useSubjectStore } from '../stores/useSubjectStore';
 
 const Subjects: React.FC = () => {
   // const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filterType, setFilterType] = useState<'all' | 'lecture' | 'lab'>('all');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { subjects, getSubjects } = useSubjectStore();
+  const { subjects, getSubjects, loading } = useSubjectStore();
   // Fetch subjects from backend
-  const fetchSubjects = async () => {
-    try {
-      setLoading(true);
-      await getSubjects();
-    } catch (error) {
-      console.error('Error fetching subjects:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    fetchSubjects();
-  },[]);
-
+    getSubjects();
+  }, [subjects.length]);
   // Filter subjects based on search and type
-  const filteredSubjects = subjects.filter((subject) => {
-    const matchesSearch =
-      subject.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      subject.code.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesType = filterType === 'all' || subject.type === filterType;
+  const filteredSubjects = useMemo(() => {
+    return subjects.filter((subject) => {
+      const matchesSearch =
+        subject.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        subject.code.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesSearch && matchesType;
-  });
+      const matchesType = filterType === 'all' || subject.type === filterType;
+
+      return matchesSearch && matchesType;
+    });
+  }, [subjects, searchQuery, filterType]);
 
   // Group subjects by type
-  const lectures = filteredSubjects.filter((s) => s.type === 'lecture');
-  const labs = filteredSubjects.filter((s) => s.type === 'lab');
+  const { lectures, labs } = useMemo(() => {
+    return {
+      lectures: filteredSubjects.filter((s) => s.type === 'lecture'),
+      labs: filteredSubjects.filter((s) => s.type === 'lab'),
+    };
+  }, [filteredSubjects]);
 
-  const handleModalSuccess = () => {
-    fetchSubjects(); // Refresh the subjects list
-  };
+  const handleModalSuccess = () => getSubjects();
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -74,9 +68,9 @@ const Subjects: React.FC = () => {
             </button>
           </div>
 
-          {/* Search and Filter Bar */}
+         
           <div className="flex flex-col sm:flex-row gap-4">
-            {/* Search */}
+         
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
               <input
@@ -88,7 +82,7 @@ const Subjects: React.FC = () => {
               />
             </div>
 
-            {/* Filter */}
+     
             <div className="flex gap-2">
               <button
                 onClick={() => setFilterType('all')}
@@ -128,10 +122,10 @@ const Subjects: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+     
       <div className="max-w-7xl mx-auto px-8 py-12">
         {loading ? (
-          // Loading State
+        
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
               <motion.div
@@ -143,7 +137,7 @@ const Subjects: React.FC = () => {
             </div>
           </div>
         ) : filteredSubjects.length === 0 ? (
-          // Empty State
+         
           <div className="text-center py-20">
             <div className="inline-block p-6 bg-zinc-900/50 rounded-2xl border border-zinc-800 mb-6">
               <BookOpen className="w-16 h-16 text-zinc-700" />
@@ -163,9 +157,9 @@ const Subjects: React.FC = () => {
             </button>
           </div>
         ) : (
-          // Subjects Grid
+        
           <div className="space-y-12">
-            {/* Stats Overview */}
+           
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-linear-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -204,7 +198,7 @@ const Subjects: React.FC = () => {
               </div>
             </div>
 
-            {/* Lectures Section */}
+         
             {lectures.length > 0 && (
               <div>
                 <h2 className="text-2xl font-light text-white mb-6 flex items-center gap-2">
@@ -219,7 +213,7 @@ const Subjects: React.FC = () => {
               </div>
             )}
 
-            {/* Labs Section */}
+            
             {labs.length > 0 && (
               <div>
                 <h2 className="text-2xl font-light text-white mb-6 flex items-center gap-2">
