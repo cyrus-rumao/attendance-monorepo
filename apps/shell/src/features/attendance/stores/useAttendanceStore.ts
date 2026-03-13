@@ -20,11 +20,26 @@ export interface AttendanceRecord {
 	status: AttendanceStatus;
 }
 
+export interface AttendanceSummaryItem {
+	subject: {
+		_id: string;
+		name: string;
+		code: string;
+		type: 'lecture' | 'lab';
+	};
+	attended: number;
+	total: number;
+	percentage: number;
+}
+
 interface AttendanceStore {
 	attendanceByDate: AttendanceRecord[];
+	attendanceSummary: AttendanceSummaryItem[];
 	loading: boolean;
+	summaryLoading: boolean;
 
 	getAttendanceByDate: (date: string) => Promise<void>;
+	getAttendanceSummary: () => Promise<void>;
 	markAttendance: (data: {
 		subjectId: string;
 		date: string;
@@ -39,7 +54,9 @@ interface AttendanceStore {
 
 export const useAttendanceStore = create<AttendanceStore>((set, get) => ({
   attendanceByDate: [],
+  attendanceSummary: [],
   loading: false,
+  summaryLoading: false,
 
   // ---------- GET BY DATE ----------
   getAttendanceByDate: async (date) => {
@@ -58,6 +75,20 @@ export const useAttendanceStore = create<AttendanceStore>((set, get) => ({
       const err = error as AxiosError<{ message?: string }>;
       notify.error(err.response?.data?.message || 'Failed to fetch attendance');
       set({ attendanceByDate: [], loading: false });
+    }
+  },
+
+  // ---------- GET SUMMARY ----------
+  getAttendanceSummary: async () => {
+    set({ summaryLoading: true });
+
+    try {
+      const res = await axios.get('/attendance/summary');
+      set({ attendanceSummary: res.data, summaryLoading: false });
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message?: string }>;
+      notify.error(err.response?.data?.message || 'Failed to fetch attendance summary');
+      set({ attendanceSummary: [], summaryLoading: false });
     }
   },
 
@@ -119,6 +150,6 @@ export const useAttendanceStore = create<AttendanceStore>((set, get) => ({
   },
 
   resetAttendance: () => {
-    set({ attendanceByDate: [] });
+    set({ attendanceByDate: [], attendanceSummary: [] });
   },
 }));
