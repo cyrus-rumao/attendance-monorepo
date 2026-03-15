@@ -16,7 +16,7 @@ const Timetable: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center pt-16">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-zinc-800 border-t-amber-500 rounded-full mx-auto mb-4" />
           <p className="text-zinc-500">Loading timetable...</p>
@@ -27,7 +27,7 @@ const Timetable: React.FC = () => {
 
   if (!timetable) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center pt-16">
         <div className="text-center">
           <Calendar className="w-16 h-16 text-zinc-700 mx-auto mb-4" />
           <h3 className="text-2xl font-light text-white mb-2">No timetable found</h3>
@@ -38,8 +38,8 @@ const Timetable: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pb-12">
-      <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl sticky top-0 z-40">
+    <div className="min-h-screen bg-black text-white pb-12 pt-16">
+      <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl top-0 z-40">
         <div className="max-w-400 mx-auto px-8 py-6">
           <div className="flex items-center justify-between">
             <div>

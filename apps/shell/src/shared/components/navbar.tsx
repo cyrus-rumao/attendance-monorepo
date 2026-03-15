@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../features/auth/stores/useAuthStore';
 
@@ -6,12 +6,25 @@ export default function Navbar(): JSX.Element {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
-
+  const [open, setOpen] = useState(false);
+  const ref= useRef<HTMLDivElement>(null);
   const handleLogout = async (): Promise<void> => {
     await logout();
     navigate('/login', { replace: true });
   };
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
 
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+useEffect(() => {
+  setOpen(false);
+}, [user]);
   const avatarLabel = user?.name?.trim().charAt(0).toUpperCase() || 'U';
 
   return (
@@ -24,26 +37,31 @@ export default function Navbar(): JSX.Element {
       </Link>
 
       {user ? (
-        <details className="group relative">
-          <summary className="flex cursor-pointer list-none items-center gap-3 rounded-full border border-amber-900/40 bg-zinc-900/80 px-3 py-1.5 text-sm text-amber-100/90 transition hover:border-amber-500/50">
+        <div ref={ref} className="relative">
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex items-center gap-3 rounded-full border border-amber-900/40 bg-zinc-900/80 px-3 py-1.5 text-sm text-amber-100/90 transition hover:border-amber-500/50"
+          >
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500/20 text-sm font-semibold text-amber-300">
               {avatarLabel}
             </span>
             <span className="max-w-36 truncate">{user.name}</span>
-          </summary>
+          </button>
+          {open && (
+            <div className="absolute right-0 top-12 w-64 rounded-lg border border-amber-900/40 bg-zinc-950/95 p-3 text-sm shadow-xl">
+              <p className="text-xs uppercase tracking-widest text-zinc-500">Profile</p>
+              <p className="mt-2 font-medium text-amber-100">{user.name}</p>
+              <p className="truncate text-xs text-zinc-400">{user.email}</p>
 
-          <div className="absolute right-0 mt-2 w-64 rounded-lg border border-amber-900/40 bg-zinc-950/95 p-3 text-sm shadow-xl">
-            <p className="text-xs uppercase tracking-widest text-zinc-500">Profile</p>
-            <p className="mt-2 font-medium text-amber-100">{user.name}</p>
-            <p className="truncate text-xs text-zinc-400">{user.email}</p>
-            <button
-              onClick={handleLogout}
-              className="mt-3 w-full rounded-md border border-amber-900/50 px-3 py-2 text-left text-xs font-bold uppercase tracking-widest text-amber-500 transition hover:border-amber-500 hover:bg-amber-500/10"
-            >
-              Logout
-            </button>
-          </div>
-        </details>
+              <button
+                onClick={handleLogout}
+                className="mt-3 w-full rounded-md border border-amber-900/50 px-3 py-2 text-left text-xs font-bold uppercase tracking-widest text-amber-500 transition hover:border-amber-500 hover:bg-amber-500/10"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       ) : (
         <div className="flex items-center gap-3 text-sm">
           <Link

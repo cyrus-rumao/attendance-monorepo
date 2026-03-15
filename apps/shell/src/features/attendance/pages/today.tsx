@@ -96,7 +96,7 @@ const Today: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pb-12">
+    <div className="min-h-screen bg-black text-white pb-12 pt-16">
       {/* Attendance Marking Modal */}
       <AttendanceModal
         isOpen={selectedSlot !== null}
@@ -107,7 +107,7 @@ const Today: React.FC = () => {
       />
 
       {/* Header */}
-      <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl sticky top-0 z-40">
+      <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl  top-0 z-40">
         <div className="max-w-4xl mx-auto px-8 py-6">
           <div className="flex items-center justify-between mb-4">
             <div>

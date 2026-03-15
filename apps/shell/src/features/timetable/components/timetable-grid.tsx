@@ -36,7 +36,7 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({
         }}
       >
      
-        <div className="sticky left-0 z-30 bg-gradient-to-br from-zinc-900 to-black border-2 border-zinc-800 rounded-lg flex items-center justify-center">
+        <div className=" left-0 z-30 bg-gradient-to-br from-zinc-900 to-black border-2 border-zinc-800 rounded-lg flex items-center justify-center">
           <span className="text-xs text-zinc-500 font-medium">TIME</span>
         </div>
 
@@ -55,7 +55,7 @@ const TimetableGrid: React.FC<TimetableGridProps> = ({
             <React.Fragment key={time}>
            
               <div
-                className="sticky left-0 z-20 bg-zinc-950 border border-zinc-800 flex items-center justify-center"
+                className="left-0 z-20 bg-zinc-950 border border-zinc-800 flex items-center justify-center"
                 style={{ gridRow: timeIndex + 2 }}
               >
                 <span className="text-xs text-zinc-400">{time}</span>

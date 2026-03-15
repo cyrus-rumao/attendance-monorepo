@@ -43,7 +43,7 @@ const Subjects: React.FC = () => {
   const handleModalSuccess = () => getSubjects();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white pt-16">
       {/* Add Subject Modal */}
       <AddSubjectModal
         isOpen={isModalOpen}
@@ -52,7 +52,7 @@ const Subjects: React.FC = () => {
       />
 
       {/* Header */}
-      <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl sticky top-0 z-40">
+      <div className="border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-xl  top-0 relative">
         <div className="max-w-7xl mx-auto px-8 py-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -70,7 +70,6 @@ const Subjects: React.FC = () => {
 
          
           <div className="flex flex-col sm:flex-row gap-4">
-         
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
               <input

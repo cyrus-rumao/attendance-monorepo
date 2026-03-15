@@ -32,7 +32,7 @@ const App: React.FC = () => {
       {user && <Sidebar />}
       <div
         className={`relative min-h-screen bg-[radial-gradient(circle_at_center,#241d0b_0%,black_70%)] text-white 
-        ${user ? 'pl-72 pt-16' : 'pt-16'}`}
+        ${user ? 'pl-72' : ''}`}
       >
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>

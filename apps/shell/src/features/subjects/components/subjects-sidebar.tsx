@@ -24,7 +24,7 @@ const SubjectsSidebar: React.FC<SubjectsSidebarProps> = ({
 
   return (
     <div className="w-80 shrink-0">
-      <div className="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-6 sticky top-32">
+      <div className="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-2xl p-6 top-32">
         <h2 className="text-xl font-medium text-white mb-4">Subjects</h2>
 
     

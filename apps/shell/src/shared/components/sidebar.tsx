@@ -14,14 +14,14 @@ export default function Sidebar(): JSX.Element {
       className="fixed top-16 left-0 z-30 h-[calc(100vh-4rem)] w-72 border-r border-amber-900/40 bg-zinc-950/95 p-6 backdrop-blur-md"
       aria-label="Side navigation"
     >
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <Link
           to="/dashboard"
           className="bg-linear-to-r from-amber-200 via-amber-500 to-amber-200 bg-clip-text text-xl font-bold tracking-tighter text-transparent transition hover:opacity-80"
         >
           ATTENDANCE<span className="font-light">TRKR</span>
         </Link>
-      </div>
+      </div> */}
 
       <nav className="flex flex-col gap-3">
         <NavLink to="/dashboard" className={navItemClass}>
