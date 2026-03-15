@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: attendance-api
+    restart: unless-stopped
+    environment:
+      PORT: 4000
+      MONGO_URI: ${MONGO_URI}
+      REDIS_URL: ${REDIS_URL}
+    ports:
+      - "4000:4000"
+
+  shell:
+    build:
+      context: .
+      dockerfile: Dockerfile.shell
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: attendance-shell
+    restart: unless-stopped
+    ports:
+      - "80:80"
