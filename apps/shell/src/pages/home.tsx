@@ -50,7 +50,7 @@ const Section: React.FC<SectionProps> = ({
 
 const Home: React.FC = () => {
   return (
-    <div className="relative bg-black text-white">
+    <div className="relative bg-black text-white mt-10">
       <section className="min-h-screen flex items-center bg-black">
         <div className="max-w-7xl mx-auto px-8 py-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

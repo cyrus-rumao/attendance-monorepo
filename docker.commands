@@ -1,0 +1,12 @@
+rebuild web image
+
+docker build -f Dockerfile.shell -t cyrumao117/attendance-web:latest .
+docker push cyrumao117/attendance-web:latest
+
+then on the server
+
+docker compose pull
+docker compose up -d
+
+
+same for api

@@ -40,12 +40,14 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     try {
       const res = await axios.post('/auth/signup', paresedInput.data);
-      const user = UserSchema.parse(res.data);
+      const user = UserSchema.parse(res.data.user);
       set({ user: user, loading: false });
       notify.success('Signup successful');
       return true;
     } catch (error: unknown) {
+
       const err = error as AxiosError<{ message?: string }>;
+      console.log(err)
       notify.error(err.response?.data?.message || 'Signup failed');
       set({ loading: false });
       return false;
