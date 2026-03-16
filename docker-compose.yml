@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  api:
+    image: cyrumao117/attendance-api:latest
+    container_name: attendance-api
+    restart: unless-stopped
+    env_file:
+      - .env.production.local
+    expose:
+      - "4000"
+
+  shell:
+    image: cyrumao117/attendance-web:latest
+    container_name: attendance-shell
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: attendance-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+      - shell

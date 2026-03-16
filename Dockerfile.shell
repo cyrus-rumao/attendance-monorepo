@@ -1,17 +1,24 @@
-FROM node:20-alpine
+# ---------- BUILD STAGE ----------
+FROM node:20-alpine AS builder
 
 WORKDIR /app
-
 RUN corepack enable
+
+ENV VITE_API_URL=/api
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json ./
 COPY apps ./apps
 COPY libs ./libs
 
 RUN pnpm install --frozen-lockfile
+RUN pnpm nx build shell
 
-RUN pnpm nx build api
 
-EXPOSE 4000
+# ---------- RUNTIME STAGE ----------
+FROM nginx:alpine
 
-CMD ["node", "dist/apps/api/main.js"]
+COPY --from=builder /app/dist/apps/shell /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
