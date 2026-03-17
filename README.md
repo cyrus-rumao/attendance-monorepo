@@ -125,13 +125,13 @@ VITE_API_URL=http://localhost:4000
 Start backend:
 
 ```bash
-pnpm nx run api:serve
+nx serve api
 ```
 
 Start frontend:
 
 ```bash
-pnpm nx run shell:serve
+nx serve shell
 ```
 
 Build projects:
@@ -165,37 +165,3 @@ Stop containers:
 ```bash
 docker compose down
 ```
-
-For a full production walkthrough, see:
-
-- [`docs/deployment/single-vm-docker-compose.md`](docs/deployment/single-vm-docker-compose.md)
-
----
-
-## API Routes (High-Level)
-
-- `/api/auth` - authentication routes
-- `/api/subjects` - subject management
-- `/api/timetable` - timetable management
-- `/api/attendance` - attendance records
-
----
-
-## Why Nx for this project?
-
-Nx provides:
-- Clear project boundaries between apps and libs
-- Fast incremental builds and task caching
-- Scalable workspace organization as the product grows
-
----
-
-## Author
-
-Built by **Cyrus Rumao**.
-
-If you'd like, I can also add:
-- architecture diagram section,
-- endpoint table with request/response samples,
-- local `.env.example` templates,
-- and contributor setup (`lint`, `test`, commit conventions).
