@@ -1,111 +1,201 @@
-# New Nx Repository
+# Attendance Tracker
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A full-stack attendance management platform built with a **MERN + Nx monorepo** architecture.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+> **Stack:** MongoDB, Express, React, Node.js, Nx, Docker, Nginx, Redis, JWT
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
-## Finish your Nx platform setup
+🔗 **Repository:** [github.com/cyrus-rumao/attendance-monorepo](https://github.com/cyrus-rumao/attendance-monorepo)
 
-🚀 [Finish setting up your workspace](https://cloud.nx.app/connect/1dZZtZpfes) to get faster builds with remote caching, distributed task execution, and self-healing CI. [Learn more about Nx Cloud](https://nx.dev/ci/intro/why-nx-cloud).
+---
 
-## Generate a library
+## Highlights
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+- Architected as an **Nx monorepo** with modular backend services and a **microfrontend-ready React shell** for scalable development and independent evolution.
+- Implemented secure **JWT authentication** (access + refresh tokens) with **Redis-backed sessions** and role-aware authorization patterns.
+- Containerized services with **Docker** and routed traffic via **Nginx reverse proxy** for production-friendly deployments.
+- Built structured REST APIs with clear service boundaries for maintainability and fast feature iteration.
+
+---
+
+## Monorepo Structure
+
+```text
+apps/
+  api/      # Node.js + Express backend
+  shell/    # React + Vite frontend
+libs/
+  schemas/  # Shared schemas/types/constants
+docs/
+  deployment/
 ```
 
-## Run tasks
+### Nx Projects
 
-To build the library use:
+- `api` (application)
+- `shell` (application)
+- `schemas` (library)
 
-```sh
-npx nx build pkg1
+---
+
+## Core Features
+
+- Authentication and session management
+  - JWT access token + refresh token strategy
+  - HTTP-only auth cookies
+  - Redis session storage / token lifecycle support
+- Attendance workflows
+  - Mark and review attendance records
+  - Dashboard/today views
+- Timetable and subject management
+  - Subject CRUD flows
+  - Timetable creation and scheduling
+- Shared schema library
+  - Centralized reusable data contracts
+
+---
+
+## Tech Stack
+
+### Frontend
+- React 19
+- Vite
+- Tailwind CSS
+- Zustand
+- React Router
+
+### Backend
+- Node.js + Express
+- MongoDB (Mongoose)
+- Redis (ioredis)
+- JWT + cookie-based auth
+
+### DevOps / Platform
+- Nx monorepo
+- Docker & Docker Compose
+- Nginx reverse proxy
+- pnpm workspaces
+
+---
+
+## Getting Started
+
+### 1) Prerequisites
+
+- Node.js 20+
+- pnpm 10+
+- Docker + Docker Compose (for containerized runs)
+- MongoDB instance
+- Redis instance
+
+### 2) Install dependencies
+
+```bash
+pnpm install
 ```
 
-To run any task with Nx use:
+### 3) Environment variables
 
-```sh
-npx nx <target> <project-name>
+Create your env files (for local/dev and production as needed).
+
+#### API (`apps/api` runtime)
+
+Required variables:
+
+```env
+PORT=4000
+MONGO_URI=mongodb+srv://...
+REDIS_URL=rediss://...
+JWT_ACCESS_SECRET=your_access_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+NODE_ENV=development
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+#### Frontend (`apps/shell` build/runtime)
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
-
-```
-npx nx release
+```env
+VITE_API_URL=http://localhost:4000
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+> Note: in production, set `VITE_API_URL` to your public API domain.
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Keep TypeScript project references up to date
+## Run Locally (Nx)
 
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
+Start backend:
 
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+```bash
+pnpm nx run api:serve
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+Start frontend:
 
-```sh
-npx nx sync:check
+```bash
+pnpm nx run shell:serve
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+Build projects:
 
-## Nx Cloud
-
-Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Set up CI (non-Github Actions CI)
-
-**Note:** This is only required if your CI provider is not GitHub Actions.
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```bash
+pnpm nx run api:build
+pnpm nx run shell:build
+pnpm nx run schemas:build
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Explore project graph:
 
-## Install Nx Console
+```bash
+pnpm nx graph
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+---
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Docker Deployment
 
-## Useful links
+A ready Docker/Nginx setup is included at the repo root (`docker-compose.yml`, `nginx.conf`).
 
-Learn more:
+Run containers:
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+docker compose up -d
+```
 
-And join the Nx community:
+Stop containers:
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+docker compose down
+```
 
-## Deployment guides
+For a full production walkthrough, see:
 
-- [Single VM with Docker Compose](docs/deployment/single-vm-docker-compose.md)
+- [`docs/deployment/single-vm-docker-compose.md`](docs/deployment/single-vm-docker-compose.md)
+
+---
+
+## API Routes (High-Level)
+
+- `/api/auth` - authentication routes
+- `/api/subjects` - subject management
+- `/api/timetable` - timetable management
+- `/api/attendance` - attendance records
+
+---
+
+## Why Nx for this project?
+
+Nx provides:
+- Clear project boundaries between apps and libs
+- Fast incremental builds and task caching
+- Scalable workspace organization as the product grows
+
+---
+
+## Author
+
+Built by **Cyrus Rumao**.
+
+If you'd like, I can also add:
+- architecture diagram section,
+- endpoint table with request/response samples,
+- local `.env.example` templates,
+- and contributor setup (`lint`, `test`, commit conventions).
