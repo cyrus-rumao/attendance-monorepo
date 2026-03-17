@@ -70,16 +70,16 @@ export const signup = async (req: Request, res: Response): Promise<Response> => 
     setCookies(res, accessToken, refreshToken);
 
     return res.status(201).json({
-      success: true,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-        __v: user.__v,
-      },
-    });
+  success: true,
+  user: {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    __v: user.__v
+  }
+});
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error in Signup' });

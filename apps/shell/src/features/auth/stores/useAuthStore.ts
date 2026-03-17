@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     } catch (error: unknown) {
 
       const err = error as AxiosError<{ message?: string }>;
-      console.log(err)
+      // console.log(err)
       notify.error(err.response?.data?.message || 'Signup failed');
       set({ loading: false });
       return false;
