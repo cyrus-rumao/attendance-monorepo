@@ -20,7 +20,7 @@ jobs:
 
       - name: Install deps
         run: npm install -g pnpm && pnpm install
-          
+
       - name: Build NX apps
         run: pnpm nx build api && pnpm nx build shell
 
@@ -29,13 +29,13 @@ jobs:
 
       - name: Build & push backend
         run: |
-          docker build -t cyrumao117/attendance-api ./apps/api
-          docker push cyrumao117/attendance-api
+          docker build -f Dockerfile.api -t cyrumao117/attendance-api:latest .
+          docker push cyrumao117/attendance-api:latest
 
       - name: Build & push frontend
         run: |
-          docker build -t cyrumao117/attendance-web ./apps/shell
-          docker push cyrumao117/attendance-web
+          docker build -f Dockerfile.shell -t cyrumao117/attendance-web:latest .
+          docker push cyrumao117/attendance-web:latest
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v1
@@ -44,7 +44,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull cyrumao117/attendance-api
-            docker pull cyrumao117/attendance-web
+            docker pull cyrumao117/attendance-api:latest
+            docker pull cyrumao117/attendance-web:latest
             docker compose down
             docker compose up -d
