@@ -57,7 +57,7 @@ const Home: React.FC = () => {
             <div>
               <div className="inline-block mb-4">
                 <span className="text-amber-500 text-sm font-medium tracking-wider uppercase">
-                  Smart Attendance Management
+         This is smart nonsense
                 </span>
               </div>
 
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
                 Never Miss
                 <br />
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-500 to-yellow-600">
-                  Attendance
+                  Your Death
                 </span>
                 <br />
                 Again
