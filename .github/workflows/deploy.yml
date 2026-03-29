@@ -45,7 +45,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/attendance
-            git
             docker pull cyrumao117/attendance-api:latest
             docker pull cyrumao117/attendance-web:latest
             docker compose down
