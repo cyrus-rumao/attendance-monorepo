@@ -4,8 +4,6 @@ A full-stack attendance management platform built with a **MERN + Nx monorepo** 
 
 > **Stack:** MongoDB, Express, React, Node.js, Nx, Docker, Nginx, Redis, JWT
 
-🔗 **Repository:** [github.com/cyrus-rumao/attendance-monorepo](https://github.com/cyrus-rumao/attendance-monorepo)
-
 ---
 
 ## Highlights
