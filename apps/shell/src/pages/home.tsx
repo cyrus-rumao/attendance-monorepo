@@ -16,7 +16,7 @@ const Section: React.FC<SectionProps> = ({
   title,
   description,
   imagePosition = 'right',
-  imageSrc = 'https://picsum.photos/200/300',
+  imageSrc = '',
   imageAlt,
   children,
   darkBg = false,
@@ -106,7 +106,7 @@ const Home: React.FC = () => {
             <div className="relative">
               <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-amber-500/20 bg-zinc-900">
                 <img
-                  src="https://picsum.photos/400/200"
+                  src=""
                   alt="AttendX Dashboard"
                   className="w-full h-full object-fill"
                 />
@@ -121,7 +121,7 @@ const Home: React.FC = () => {
         title="Hourly Reminders That Actually Work"
         description="Get notified every hour to mark your attendance. Never forget a lecture again. One tap to mark present, bunk, or absent. It's that simple."
         imagePosition="right"
-        imageSrc="https://picsum.photos/200/300"
+        imageSrc=""
         imageAlt="Notification Interface"
         darkBg={true}
       >
@@ -141,7 +141,7 @@ const Home: React.FC = () => {
         title="Know Exactly Where You Stand"
         description="Real-time attendance tracking across all subjects. See your percentage live. Get instant calculations on how many lectures you need to attend to hit 75%."
         imagePosition="left"
-        imageSrc="https://picsum.photos/200/300"
+        imageSrc=""
         imageAlt="Analytics Dashboard"
       >
         <div className="flex gap-4 mt-6">
@@ -160,7 +160,7 @@ const Home: React.FC = () => {
         title="Master Every Subject"
         description="Get detailed insights for each subject and lab. Identify which courses need more attention instantly. Color-coded system shows you critical subjects at a glance."
         imagePosition="right"
-        imageSrc="https://picsum.photos/200/300"
+        imageSrc=""
         imageAlt="Subject Management"
         darkBg={true}
       >
@@ -184,7 +184,7 @@ const Home: React.FC = () => {
         title="Visual Calendar That Makes Sense"
         description="Color-coded calendar showing your entire attendance history. See patterns, bunks, and lecture days at a glance. Plan ahead and make informed decisions."
         imagePosition="left"
-        imageSrc="https://picsum.photos/200/300"
+        imageSrc=""
         imageAlt="Calendar View"
       >
         <div className="flex gap-4 mt-6">
@@ -203,7 +203,7 @@ const Home: React.FC = () => {
         title="Works Everywhere You Do"
         description="Mark attendance from your phone during class. View analytics on your laptop. Everything syncs seamlessly across all your devices in real-time."
         imagePosition="right"
-        imageSrc="https://picsum.photos/200/300"
+        imageSrc=""
         imageAlt="Mobile App"
         darkBg={true}
       >
